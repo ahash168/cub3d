@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:49:03 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/20 21:01:47 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/21 11:54:04 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	parsing(char *path, t_game *game)
 		(printf("couldnt get them all\n"), exit(1));
 	get_map(&file, &game->map, index);
 	free_array(file.file);
-	check_closed(&game->map);
-	check_player(&game->map);
-	no_void(&game->map);
+	validate_map(&game->map);
 	// VALIDATE_MAP
 }

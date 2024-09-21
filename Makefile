@@ -6,7 +6,7 @@
 #    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/09/20 21:14:13 by ahashem          ###   ########.fr        #
+#    Updated: 2024/09/21 11:58:48 by ahashem          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME	=	cub3d
 SRCCP	=	parsing.c parse_file.c parse_textures.c assign_texture.c assign_colour.c \
 			parse_map.c validate_map.c parsing_utils.c
 
-SRCCE	=	
+SRCCE	=	hooks.c
 
 SRC 	= 	srcs/cub3d.c \
 			$(addprefix srcs/parsing/, $(SRCCP)) \
@@ -24,7 +24,7 @@ SRC 	= 	srcs/cub3d.c \
 OBJ		=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -Werror
-#CFLAGS	+=	-fsanitize=address -g3
+CFLAGS	+=	-fsanitize=address -g3
 
 LIBFT	=	includes/libft/libft.a
 

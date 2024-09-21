@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/20 20:07:15 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/21 11:54:20 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define WEST		'W'
 # define SOUTH		'S'
 # define DOOR		'D'
+# define ESC 		53
 # define USAGE		"Usage: ./cub3d [map_path].cub\n"
 # define FILE_404	"File not found.\n"
 # define TXTR_404	"Texture not found.\n"
@@ -105,15 +106,17 @@ void	assign_colour(char *str, int *colour, int *arr, t_game *game);
 int		assign_texture(char *str, void **texture, t_game *game, int err_flag);
 
 void	get_map(t_file *file, t_map *map, int index);
-
-void	no_void(t_map *map);
-void	check_player(t_map *map);
-void	check_closed(t_map *map);
+void	validate_map(t_map *map);
 
 int		empty_line(char *str);
 void	free_array(char **arr);
 
 int		minimap(t_game *game);
 void	rendermap(t_game *game);
+
+//						execution					//
+
+int		x_button(t_game *game);
+int		keypress(int keysym, t_game *game);
 
 #endif

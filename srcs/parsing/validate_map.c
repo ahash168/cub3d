@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:54:07 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/20 21:01:47 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/21 11:53:41 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,11 @@ void	no_void(t_map *map)
 				(printf("pos: x:%d\ny:%d\n\nyou cant go into the void bruv\n", j, i), exit(1));
 		}
 	}
+}
+
+void	validate_map(t_map *map)
+{
+	check_closed(map);
+	check_player(map);
+	no_void(map);
 }
