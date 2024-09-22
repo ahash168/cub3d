@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/09/22 19:04:55 by tabadawi         ###   ########.fr        #
+#    Updated: 2024/09/22 20:44:37 by ahashem          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,12 @@ SRCCP	=	parsing.c parse_file.c parse_textures.c assign_texture.c assign_colour.c
 
 SRCCE	=	hooks.c
 
+SRCCU	=	error.c
+
 SRC 	= 	srcs/cub3d.c \
 			$(addprefix srcs/parsing/, $(SRCCP)) \
-			$(addprefix srcs/execution/, $(SRCCE))
+			$(addprefix srcs/execution/, $(SRCCE)) \
+			$(addprefix srcs/utils/, $(SRCCU))
 
 OBJ		=	$(SRC:.c=.o)
 

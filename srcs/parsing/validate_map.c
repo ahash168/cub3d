@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:54:07 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/22 19:03:28 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/22 21:41:59 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	check_player(t_map *map)
+void	check_player(t_map *map, t_game *game)
 {
 	int	i;
 	int	j;
@@ -32,17 +32,27 @@ void	check_player(t_map *map)
 					map->player = map->map[i][j];
 				}
 				else
-					(printf("Broddie u can only have one\n"), exit(1));
-					//FREEEEEE
+					errorer(game, 3, XTRA_PLYR);
 			}
 		}
 	}
-	//FREEEEEE
 	if (!map->player)
-		(printf("soo.... u dont wanna play?\n"), exit(1));
+		errorer(game, 3, NO_PLYR);
 }
 
-void	no_void(t_map *map)
+void	check_voidy(int i, int j, t_game *game, int invalid)
+{
+	if (j > 0 && game->map.map[i][j - 1] == invalid)
+		errorer(game, 3, VOID);
+	if (j < game->map.width - 1 && game->map.map[i][j + 1] == invalid)
+		errorer(game, 3, VOID);
+	if (i > 0 && game->map.map[i - 1][j] == invalid)
+		errorer(game, 3, VOID);
+	if (i < game->map.height - 1 && game->map.map[i + 1][j] == invalid)
+		errorer(game, 3, VOID);
+}
+
+void	no_void(t_map *map, t_game *game)
 {
 	int		i;
 	int		j;	
@@ -62,21 +72,13 @@ void	no_void(t_map *map)
 				invalid = ' ';
 			else
 				continue ;
-			if (j > 0 && map->map[i][j - 1] == invalid)
-				(printf("pos: x:%d\ny:%d\n\nyou cant go into the void bruv\n", j, i), exit(1));
-			if (j < map->width - 1 && map->map[i][j + 1] == invalid)
-				(printf("pos: x:%d\ny:%d\n\nyou cant go into the void bruv\n", j, i), exit(1));
-			if (i > 0 && map->map[i - 1][j] == invalid)
-				(printf("pos: x:%d\ny:%d\n\nyou cant go into the void bruv\n", j, i), exit(1));
-			if (i < map->height - 1 && map->map[i + 1][j] == invalid)
-				(printf("pos: x:%d\ny:%d\n\nyou cant go into the void bruv\n", j, i), exit(1));
-			//FREEEEEEEEEEE
+			check_voidy(i, j, game, invalid);
 		}
 	}
 }
 
-void	validate_map(t_map *map)
+void	validate_map(t_map *map, t_game *game)
 {
-	check_player(map);
-	no_void(map);
+	check_player(map, game);
+	no_void(map, game);
 }

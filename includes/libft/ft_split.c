@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 17:19:13 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/02/01 12:32:47 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/22 20:45:16 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	**freeer(char **split, int i)
+char	**freee(char **split, int i)
 {
 	while (i-- > 0)
 		free (split[i]);
@@ -81,7 +81,7 @@ char	**ft_split(char const *s, char c)
 		{
 			var.split[var.i] = wordsize(s, c);
 			if (!var.split[var.i])
-				return (freeer(var.split, var.i));
+				return (freee(var.split, var.i));
 			var.i++;
 			while (*s && *s != c)
 				s++;

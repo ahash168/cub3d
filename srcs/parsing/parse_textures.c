@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_textures.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:51:09 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/22 17:53:14 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/22 21:43:22 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,17 @@ int	get_textures(t_file *file, t_textures *textures, t_game *game)
 		{
 			if (!check_texture(file->file[i], textures, game))
 			{
-				//need to free file.file before exiting
-				if (map_line(file->file[i], 0))
-					(printf("couldnt get all textures\n"), exit (1));
+				if (map_line(file->file[i], 0, game))
+					errorer(game, 3, CANT_TXTR);
 				else
-					(printf("%s: not a texture\n", file->file[i]), exit (1));
+				{
+					write(2, file->file[i], ft_strlen(file->file[i]));
+					errorer(game, 3, NOT_TXTR);
+				}
 			}
 		}
 	}
 	while (file->file[i] && empty_line(file->file[i]))
 		i++;
-	printf("ceiling: %x\n", textures->ceiling);
-	printf("floor: %x\n", textures->floor);
 	return (i);
 }

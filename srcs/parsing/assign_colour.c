@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assign_colour.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:52:44 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/22 18:09:43 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/22 22:02:42 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,26 @@ int	set_colour(int i, int *arr, int clr_counter, char *str)
 	return (i - 1);
 }
 
+int	if_texture(t_game *game, char *str, char type)
+{
+	char	**txtr_arr;
+
+	txtr_arr = NULL;
+	if (type == 'C')
+		txtr_arr = (char **)&game->textures.strings.ceiling;
+	else
+		txtr_arr = (char **)&game->textures.strings.floor;
+	if (assign_texture(str, txtr_arr, game, 0))
+	{
+		if (type == 'C')
+			game->textures.ceiling = 0;
+		else
+			game->textures.floor = 0;
+		return (1);
+	}
+	return (0);
+}
+
 void	assign_colour(char *str, int *colour, int *arr, t_game *game)
 {
 	int		i;
@@ -54,42 +74,25 @@ void	assign_colour(char *str, int *colour, int *arr, t_game *game)
 
 	temp = ft_split(str, ' ');
 	if (temp[0] && temp[1] && !temp[2])
-	{
-		if (temp[0][0] == 'C')
-		{
-			if (assign_texture(str, (char **)&game->textures.strings.ceiling, game, 0))
-			{
-				game->textures.ceiling = 0;
-				return (free_array(temp));
-			}
-		}
-		else if (temp[0][0] == 'F')
-		{
-			if (assign_texture(str, (char **)&game->textures.strings.floor, game, 0))
-			{
-				game->textures.floor = 0;
-				return (free_array(temp));
-			}
-		}
-	}
+		if (if_texture(game, str, temp[0][0]))
+			return (free_array(temp));
 	free_array(temp);
+	i = 0;
 	clr_counter = 0;
 	comma_counter = 0;
-	i = 0;
 	while (str[i] && (str[i] == ' ' || str[i] == 'F' || str[i] == 'C'))
 	{
 		if (str[i] == 'C' || str[i] == 'F')
 		{
 			i++;
-			break;
+			break ;
 		}
 		i++;
 	}
 	while (str[i])
 	{
-		//free file and current allocated textures
 		if (str[i] && str[i] != ',' && str[i] != ' ' && !ft_isdigit(str[i]))
-			(printf("%c: not for the colour\n", str[i]), exit(1));
+			errorer(game, 3, INV_CF);
 		if (str[i] == ',')
 			comma_counter++;
 		if (ft_isdigit(str[i]))
@@ -97,15 +100,13 @@ void	assign_colour(char *str, int *colour, int *arr, t_game *game)
 			i = set_colour(i, arr, clr_counter, str);
 			clr_counter++;
 			if (comma_counter != clr_counter - 1)
-				(printf("wrong count\n"), exit(1));
+				errorer(game, 3, INV_CF);
 		}
-		if (i == -1)
-			(printf("colour problem\n"), exit(1));
-		if (clr_counter > 3)
-			(printf("wrong count\n"), exit(1));
+		if (i == -1 || clr_counter > 3)
+			errorer(game, 3, INV_CF);
 		i++;
 	}
 	if (clr_counter != 3 || comma_counter != 2)
-		(printf("colour problem\n"), exit(1));
+		errorer(game, 3, INV_CF);
 	(*colour) = create_rgb(arr);
 }

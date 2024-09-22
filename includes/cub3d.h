@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/22 18:21:00 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/22 21:36:35 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,22 @@
 # define SOUTH		'S'
 # define DOOR		'D'
 # define ESC 		53
+# define MALLOC		"ur such a failure, computer! ;p L\n"
 # define USAGE		"Usage: ./cub3d [map_path].cub\n"
 # define FILE_404	"File not found.\n"
 # define TXTR_404	"Texture not found.\n"
-# define EMPTY		"Empty file\n"
+# define EMPTY		"Empty file.\n"
 # define INVALID	"Invalid map file.\n"
-# define INV_TXTR	"Invalid texture path\n"
-# define XPM		"Invalid .xpm file\n"
+# define INV_TXTR	"Invalid texture path.\n"
+# define XPM		"Invalid .xpm file.\n"
+# define NOT_TXTR	": not a texture.\n"
+# define CANT_TXTR	"Couldn't get all textures.\n"
+# define INV_CF		"Invalid assignment of ceiling/floor.\n"
+# define SMOL_MAP	"Map too small.\n"
+# define BAD_LMNT	"Bad element in map.\n"
+# define XTRA_PLYR	"Broddie, you can only have one player.\n"
+# define NO_PLYR	"Soo.... u dont wanna play??????????????\n"
+# define VOID		"You cant go into the void bruv\n"
 
 /*****************************************************
 *						structs						*
@@ -91,6 +100,7 @@ typedef struct s_game
 	void		*window;
 	t_map		map;
 	t_textures	textures;
+	t_file		file;
 }	t_game;
 
 
@@ -99,7 +109,6 @@ typedef struct s_game
 *****************************************************/
 
 //						parsing						//
-
 void	parsing(char *path, t_game *game);
 
 void	validate_file(char *path, t_file *file);
@@ -111,9 +120,9 @@ int		collected_textures(t_textures *textures);
 void	assign_colour(char *str, int *colour, int *arr, t_game *game);
 int		assign_texture(char *str, char **texture, t_game *game, int err_flag);
 
-void	get_map(t_file *file, t_map *map, int index);
-int		map_line(char *str, int flag);
-void	validate_map(t_map *map);
+void	get_map(t_game *game, t_map *map, int index);
+int		map_line(char *str, int flag, t_game *game);
+void	validate_map(t_map *map, t_game *game);
 
 int		empty_line(char *str);
 void	free_array(char **arr);
@@ -122,8 +131,12 @@ int		minimap(t_game *game);
 void	rendermap(t_game *game);
 
 //						execution					//
-
 int		x_button(t_game *game);
 int		keypress(int keysym, t_game *game);
+
+int		close_game(t_game *game, int flag);
+
+//						utils						//
+void	errorer(void *ptr, int dimension, char *m);
 
 #endif
