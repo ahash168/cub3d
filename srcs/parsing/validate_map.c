@@ -3,41 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:54:07 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/21 11:53:41 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/22 19:03:28 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int	edge(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (!ft_strchr(" 1", str[i]))
-			return (0);
-	return (1);
-}
-
-void	check_closed(t_map *map)
-{
-	if (!edge(map->map[0]) || !edge(map->map[map->height - 1]))
-		(printf("close your top or bottom\n"), exit(1));
-}
-
 void	check_player(t_map *map)
 {
 	int	i;
 	int	j;
-	int	player;
 
 	i = -1;
-	j = -1;
-	player = 0;
 	while (map->map[++i])
 	{
 		j = -1;
@@ -45,21 +25,21 @@ void	check_player(t_map *map)
 		{
 			if (ft_strchr("NEWS", map->map[i][j]))
 			{
-				if (!player)
+				if (!map->player)
 				{
-					player = 1;
 					map->player_y = i;
 					map->player_x = j;
 					map->player = map->map[i][j];
 				}
 				else
 					(printf("Broddie u can only have one\n"), exit(1));
+					//FREEEEEE
 			}
 		}
 	}
-	if (!player)
+	//FREEEEEE
+	if (!map->player)
 		(printf("soo.... u dont wanna play?\n"), exit(1));
-	// printf("player x:	%d\nplayer y:	%d\n", map->player_x, map->player_y);
 }
 
 void	no_void(t_map *map)
@@ -90,13 +70,13 @@ void	no_void(t_map *map)
 				(printf("pos: x:%d\ny:%d\n\nyou cant go into the void bruv\n", j, i), exit(1));
 			if (i < map->height - 1 && map->map[i + 1][j] == invalid)
 				(printf("pos: x:%d\ny:%d\n\nyou cant go into the void bruv\n", j, i), exit(1));
+			//FREEEEEEEEEEE
 		}
 	}
 }
 
 void	validate_map(t_map *map)
 {
-	check_closed(map);
 	check_player(map);
 	no_void(map);
 }

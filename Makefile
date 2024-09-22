@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
+#    By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/09/21 11:58:48 by ahashem          ###   ########.fr        #
+#    Updated: 2024/09/22 19:04:55 by tabadawi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC 	= 	srcs/cub3d.c \
 OBJ		=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -Werror
+
 CFLAGS	+=	-fsanitize=address -g3
 
 LIBFT	=	includes/libft/libft.a
@@ -47,9 +48,12 @@ $(NAME)	:	$(OBJ) $(LIBFT) $(MLX)
 			cc $(CFLAGS) -c $< -o $@
 
 clean	:
+			$(MAKE) -C includes/libft clean
 			rm -rf $(OBJ)
 
 fclean	:	clean
+			$(MAKE) -C includes/libft fclean
+			$(MAKE) -C includes/mlx clean
 			rm -rf $(NAME)
 
 re		:	fclean all
