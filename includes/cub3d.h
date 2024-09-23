@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/22 21:36:35 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 10:59:24 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int		get_textures(t_file *file, t_textures *textures, t_game *game);
 int		collected_textures(t_textures *textures);
 
 void	assign_colour(char *str, int *colour, int *arr, t_game *game);
+int		set_colour(int i, int *arr, int clr_counter, char *str);
+int		create_rgb(int *color_arr);
 int		assign_texture(char *str, char **texture, t_game *game, int err_flag);
 
 void	get_map(t_game *game, t_map *map, int index);

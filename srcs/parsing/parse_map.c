@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:53:35 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/22 21:43:12 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 11:01:01 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ void	get_map(t_game *game, t_map *map, int index)
 	if (!map->map)
 		errorer(game, 3, MALLOC);
 	i = 0;
-	printf("map height: %d\n", map->height);
-	printf("map width: %d\n", map->width);
 	while (i < map->height)
 	{
 		map->map[i] = malloc(sizeof(char) * (map->width + 1));

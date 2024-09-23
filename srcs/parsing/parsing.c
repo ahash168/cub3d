@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:49:03 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/22 22:03:02 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 11:00:47 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ void	parsing(char *path, t_game *game)
 {
 	int			index;
 
-	index = 0;
 	validate_file(path, &game->file);
 	get_file(path, &game->file);
-	index += get_textures(&game->file, &game->textures, game);
+	index = get_textures(&game->file, &game->textures, game);
 	if (!collected_textures(&game->textures))
 		errorer(game, 3, CANT_TXTR);
 	get_map(game, &game->map, index);
