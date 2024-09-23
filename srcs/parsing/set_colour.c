@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_colour.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 21:44:30 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/22 22:04:01 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 19:41:59 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	set_colour(int i, int *arr, int clr_counter, char *str)
 	int		index;
 	char	colour[4];
 
+	if (clr_counter > 2)
+		return (-1);
 	index = 0;
 	while (str[i] && ft_isdigit(str[i]))
 	{

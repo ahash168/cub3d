@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
+#    By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/09/23 13:49:09 by ahashem          ###   ########.fr        #
+#    Updated: 2024/09/23 19:57:29 by tabadawi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,23 +26,23 @@ SRC 	= 	srcs/cub3d.c \
 
 OBJ		=	$(SRC:.c=.o)
 
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -g3
 
-CFLAGS	+=	-fsanitize=address -g3
+# CFLAGS	+=	-fsanitize=address -g3
 
 LIBFT	=	includes/libft/libft.a
 
-MLX		=	includes/mlx/libmlx.a
+# MLX		=	includes/mlx/libmlx.a
 
-MLXFLAG	=	-L includes/mlx -lmlx -framework OpenGL -framework AppKit
+# MLXFLAG	=	-L includes/mlx -lmlx -framework OpenGL -framework AppKit
 
 all		:	$(NAME)
 
 $(LIBFT):
 	@$(MAKE)	-C includes/libft
 
-$(MLX):
-	@$(MAKE)  -C includes/mlx
+# $(MLX):
+# 	@$(MAKE)  -C includes/mlx
 
 $(NAME)	:	$(OBJ) $(LIBFT) $(MLX)
 			cc $(CFLAGS) $(OBJ) $(MLXFLAG) -o $@ $(LIBFT) $(MLX)

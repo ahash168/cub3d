@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close_game.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:36:56 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/23 13:50:02 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 19:42:42 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	close_game(t_game *game, int flag)
 	ft_free(game->textures.strings.south);
 	ft_free(game->textures.strings.ceiling);
 	ft_free(game->textures.strings.floor);
-	if (game->window && game->mlx)
-		mlx_destroy_window(game->mlx, game->window);
+	// if (game->window && game->mlx)
+	// 	mlx_destroy_window(game->mlx, game->window);
 	exit (flag);
 }

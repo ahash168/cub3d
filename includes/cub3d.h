@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/23 13:49:24 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 19:53:07 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@
 # define INVALID	"Invalid map file.\n"
 # define INV_TXTR	"Invalid texture path.\n"
 # define XPM		"Invalid .xpm file.\n"
-# define NOT_TXTR	": not a texture.\n"
+# define NOT_TXTR	"Non-texture found in file.\n"
 # define CANT_TXTR	"Couldn't get all textures.\n"
 # define INV_CF		"Invalid assignment of ceiling/floor.\n"
 # define SMOL_MAP	"Map too small.\n"
+# define NO_MAP		"Map doesn't exist.\n"
 # define BAD_LMNT	"Bad element in map.\n"
 # define XTRA_PLYR	"Broddie, you can only have one player.\n"
 # define NO_PLYR	"Soo.... u dont wanna play??????????????\n"
@@ -144,5 +145,6 @@ char	*ft_free(char *str);
 int		close_game(t_game *game, int flag);
 void	init_game(t_game *game);
 void	init_map(t_map *map);
+void	init_textures(t_textures *textures);
 
 #endif

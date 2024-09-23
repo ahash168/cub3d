@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:36:50 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/23 13:49:19 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 19:52:23 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	init_txtr(t_textures *textures)
+void	init_textures(t_textures *textures)
 {
 	textures->pointers.north = NULL;
 	textures->pointers.east = NULL;
@@ -50,7 +50,7 @@ void	init_map(t_map *map)
 void	init_game(t_game *game)
 {
 	init_file(&game->file);
-	init_txtr(&game->textures);
+	init_textures(&game->textures);
 	init_map(&game->map);
 	game->mlx = NULL;
 	game->window = NULL;

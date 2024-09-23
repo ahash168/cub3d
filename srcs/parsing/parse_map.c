@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:53:35 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/23 13:48:43 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 19:47:13 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	get_map(t_game *game, t_map *map, int index)
 
 	init_map(map);
 	check_len(index, map, &game->file, game);
+	if (!map->height)
+		errorer(game, 3, NO_MAP);
 	if (map->height < 3)
 		errorer(game, 3, SMOL_MAP);
 	map->map = malloc(sizeof(char *) * (map->height + 1));

@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_textures.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:51:09 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/22 21:43:22 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 19:52:36 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-void	init_textures(t_textures *textures)
-{
-	textures->pointers.east = NULL;
-	textures->pointers.north = NULL;
-	textures->pointers.south = NULL;
-	textures->pointers.west = NULL;
-	textures->pointers.ceiling = NULL;
-	textures->pointers.floor = NULL;
-	textures->strings.north = NULL;
-	textures->strings.east = NULL;
-	textures->strings.west = NULL;
-	textures->strings.south = NULL;
-	textures->strings.ceiling = NULL;
-	textures->strings.floor = NULL;
-	textures->ceiling = -1;
-	textures->floor = -1;
-}
 
 int	collected_textures(t_textures *textures)
 {
@@ -83,10 +65,7 @@ int	get_textures(t_file *file, t_textures *textures, t_game *game)
 				if (map_line(file->file[i], 0, game))
 					errorer(game, 3, CANT_TXTR);
 				else
-				{
-					write(2, file->file[i], ft_strlen(file->file[i]));
 					errorer(game, 3, NOT_TXTR);
-				}
 			}
 		}
 	}
