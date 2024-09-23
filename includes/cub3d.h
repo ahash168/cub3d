@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/23 10:59:24 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:23:09 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@
 
 typedef struct s_file
 {
+	char	**file;
 	int		fd;
 	int		file_size;
-	char	**file;
 }	t_file;
 
 typedef struct s_map
@@ -103,7 +103,6 @@ typedef struct s_game
 	t_file		file;
 }	t_game;
 
-
 /*****************************************************
 *					functions						*
 *****************************************************/
@@ -140,5 +139,6 @@ int		close_game(t_game *game, int flag);
 
 //						utils						//
 void	errorer(void *ptr, int dimension, char *m);
+char	*ft_free(char *str);
 
 #endif

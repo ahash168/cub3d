@@ -6,11 +6,19 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 20:24:08 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/22 20:47:20 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 13:20:58 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+char	*ft_free(char *str)
+{
+	if (str)
+		free(str);
+	str = NULL;
+	return (NULL);
+}
 
 char	**freeer(char **arr)
 {
@@ -20,6 +28,7 @@ char	**freeer(char **arr)
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
+	arr = NULL;
 	return (NULL);
 }
 
@@ -35,7 +44,7 @@ void	errorer(void *ptr, int dimension, char *m)
 	if (ptr && (dimension == 1))
 		free(ptr);
 	else if (dimension == 2)
-		free(freeer((char **)ptr));
+		freeer((char **)ptr);
 	else if (dimension == 3)
 		close_game((t_game *)ptr, 1);
 	exit(1);
