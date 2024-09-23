@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:21:58 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/23 10:57:32 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:37:58 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,5 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		errorer(NULL, 1, USAGE);
 	parsing(av[1], &game);
+	close_game(&game, 0);
 }

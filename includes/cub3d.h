@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/23 13:23:09 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/23 13:49:24 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,5 +140,9 @@ int		close_game(t_game *game, int flag);
 //						utils						//
 void	errorer(void *ptr, int dimension, char *m);
 char	*ft_free(char *str);
+
+int		close_game(t_game *game, int flag);
+void	init_game(t_game *game);
+void	init_map(t_map *map);
 
 #endif

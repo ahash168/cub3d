@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:53:35 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/23 11:01:01 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/23 13:48:43 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ void	check_len(int index, t_map *map, t_file *file, t_game *game)
 		index++;
 		map->height++;
 	}
-}
-
-void	init_map(t_map *map)
-{
-	map->map = NULL;
-	map->height = 0;
-	map->width = 0;
-	map->player_x = -1;
-	map->player_y = -1;
-	map->player = 0;
 }
 
 void	get_map(t_game *game, t_map *map, int index)
