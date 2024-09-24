@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/23 19:53:07 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:04:43 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,14 @@
 # define SOUTH		'S'
 # define DOOR		'D'
 # define ESC 		53
+# define UP			126
+# define DOWN		125
+# define RIGHT		124
+# define LEFT		123
+# define W			13
+# define A			0
+# define D			2
+# define S			1
 # define MALLOC		"ur such a failure, computer! ;p L\n"
 # define USAGE		"Usage: ./cub3d [map_path].cub\n"
 # define FILE_404	"File not found.\n"
@@ -58,6 +66,15 @@
 *						structs						*
 *****************************************************/
 
+typedef struct s_data
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}	t_data;
+
 typedef struct s_file
 {
 	char	**file;
@@ -70,8 +87,8 @@ typedef struct s_map
 	char	**map;
 	int		height;
 	int		width;
-	int		player_x;
-	int		player_y;
+	float	player_x;
+	float	player_y;
 	char	player;
 }	t_map;
 
@@ -102,6 +119,7 @@ typedef struct s_game
 	t_map		map;
 	t_textures	textures;
 	t_file		file;
+	t_data		img;
 }	t_game;
 
 /*****************************************************
@@ -129,12 +147,11 @@ void	validate_map(t_map *map, t_game *game);
 int		empty_line(char *str);
 void	free_array(char **arr);
 
-int		minimap(t_game *game);
-void	rendermap(t_game *game);
-
 //						execution					//
 int		x_button(t_game *game);
 int		keypress(int keysym, t_game *game);
+int		move_player(int keypress, t_game *game);
+void	rendermap(t_game *game);
 
 int		close_game(t_game *game, int flag);
 
@@ -146,5 +163,6 @@ int		close_game(t_game *game, int flag);
 void	init_game(t_game *game);
 void	init_map(t_map *map);
 void	init_textures(t_textures *textures);
+void	pixel_put(t_data *data, int x, int y, int color);
 
 #endif
