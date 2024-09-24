@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:36:50 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/23 19:52:23 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/24 11:53:01 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ void	init_game(t_game *game)
 	init_file(&game->file);
 	init_textures(&game->textures);
 	init_map(&game->map);
-	game->mlx = NULL;
+	game->mlx = mlx_init();
 	game->window = NULL;
 }
