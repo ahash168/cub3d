@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/24 20:37:52 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:44:07 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	draw_player(t_game *game, int x, int y, int colour)
 {
 	int j;
-	int i  = y - 1;
+	int i  = y;
 	while (++i < y + 63)
 	{
 		j = x - 1;
@@ -27,7 +27,7 @@ void	draw_player(t_game *game, int x, int y, int colour)
 void	draw_wall(t_game *game, int x, int y, int colour)
 {
 	int j;
-	int i  = y - 1;
+	int i  = y;
 	while (++i < y + 63)
 	{
 		j = x - 1;
@@ -39,25 +39,17 @@ void	draw_wall(t_game *game, int x, int y, int colour)
 void	draw_floor(t_game *game, int x, int y, int colour)
 {
 	int j;
-	int i  = y - 1;
+	int i  = y;
 	while (++i < y + 63)
 	{
 		j = x - 1;
-		if (i == y || i == y + 63)
-		{
+		if (i == y + 1 || i == y + 62)
 			while (++j < x + 63)
-			{
 				pixel_put(&game->img, j, i, colour);
-				pixel_put(&game->img, j, i + (i == y), colour);
-				pixel_put(&game->img, j, i - (i == y + 63), colour);
-			}
-		}
 		else
 		{
 			pixel_put(&game->img, j + 1, i, colour);
-			pixel_put(&game->img, j + 2, i, colour);
 			pixel_put(&game->img, j + 62, i, colour);
-			pixel_put(&game->img, j + 63, i, colour);
 		}
 	}
 }
