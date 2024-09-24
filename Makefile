@@ -6,7 +6,7 @@
 #    By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/09/24 12:31:06 by tabadawi         ###   ########.fr        #
+#    Updated: 2024/09/24 18:06:01 by tabadawi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME	=	cub3d
 SRCCP	=	parsing.c parse_file.c parse_textures.c assign_texture.c assign_colour.c \
 			set_colour.c parse_map.c validate_map.c parsing_utils.c
 
-SRCCE	=	hooks.c minimap.c
+SRCCE	=	hooks.c minimap.c mooooove.c drawing.c
 
 SRCCU	=	error.c close_game.c init_game.c
 
@@ -28,7 +28,7 @@ OBJ		=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -Werror -g3
 
-CFLAGS	+=	-fsanitize=address -g3
+# CFLAGS	+=	-fsanitize=address -g3
 
 LIBFT	=	includes/libft/libft.a
 
