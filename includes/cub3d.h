@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/30 21:05:51 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/01 10:50:01 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ int		keypress(int keysym, t_game *game);
 int		move_player(int keypress, t_game *game);
 int		rotate_player(int keypress, t_game *game);
 void	rendermap(t_game *game);
-void 	draw_direction_vector(t_game *game, void *mlx, void *window, int x_center, int y_center, float angle, int color);
 
 int		close_game(t_game *game, int flag);
 
