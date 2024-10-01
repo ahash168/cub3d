@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:53:35 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/23 19:47:13 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/09/30 20:14:54 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+// #include <math.h>
 
 int	map_line(char *str, int flag, t_game *game)
 {
@@ -45,6 +46,34 @@ void	check_len(int index, t_map *map, t_file *file, t_game *game)
 	}
 }
 
+void	get_angle(t_game *game, char **map, int height)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < height)
+	{
+		j = 0;
+		while  (map[i][j])
+		{
+			if (ft_strchr("NEWS", map[i][j]))
+			{
+				if (map[i][j] == 'N')
+					game->map.angle = (3 * PI) / 2;
+				else if (map[i][j] == 'E')
+					game->map.angle = 0;
+				else if (map[i][j] == 'W')
+					game->map.angle = PI;
+				else if (map[i][j] == 'S')
+					game->map.angle = PI / 2;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 void	get_map(t_game *game, t_map *map, int index)
 {
 	int	i;
@@ -68,5 +97,6 @@ void	get_map(t_game *game, t_map *map, int index)
 		i++;
 		index++;
 	}
+	get_angle(game, map->map, map->height);
 	map->map[i] = NULL;
 }

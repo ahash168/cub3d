@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hooks.c                                            :+:      :+:    :+:   */
+/*   roooootate.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/20 21:46:57 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/30 19:58:46 by ahashem          ###   ########.fr       */
+/*   Created: 2024/09/24 22:29:11 by ahashem           #+#    #+#             */
+/*   Updated: 2024/09/30 21:06:01 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int	x_button(t_game *game)
+void	rotate(float angle, t_game *game)
 {
-	(void) game;
-	write(1, "Game over! You quit :p\n", 24);
-	close_game(game, 0);
-	return (0);
+    draw_direction_vector(game, game->mlx, game->window, game->map.player_x + 50, game->map.player_y + 50, game->map.angle + angle, 0xFF0000);  // Red vector
+	game->map.angle += angle;
+	// rendermap(game);
 }
 
-int	keypress(int keysym, t_game *game)
+int	rotate_player(int keypress, t_game *game)
 {
-	(void) game;
-	if (keysym == ESC)
-		close_game(game, 0);
-	else
-	{
-		// write(1, "rooootate\n", 9);
-		rotate_player(keysym, game);
-		return (0);
-	}
+	if (keypress == RIGHT)
+		rotate(0.0174533, game);
+	if (keypress == LEFT)
+		rotate(-0.0174533, game);
 	return (0);
 }

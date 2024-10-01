@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/24 22:02:41 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/30 21:05:51 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@
 # define LEFT		123
 # define W			13
 # define A			0
-# define D			2
 # define S			1
+# define D			2
+# define PI			3.14159265359
 # define MALLOC		"ur such a failure, computer! ;p L\n"
 # define USAGE		"Usage: ./cub3d [map_path].cub\n"
 # define FILE_404	"File not found.\n"
@@ -89,6 +90,7 @@ typedef struct s_map
 	int		width;
 	float	player_x;
 	float	player_y;
+	float	angle;
 	char	player;
 }	t_map;
 
@@ -151,7 +153,9 @@ void	free_array(char **arr);
 int		x_button(t_game *game);
 int		keypress(int keysym, t_game *game);
 int		move_player(int keypress, t_game *game);
+int		rotate_player(int keypress, t_game *game);
 void	rendermap(t_game *game);
+void 	draw_direction_vector(t_game *game, void *mlx, void *window, int x_center, int y_center, float angle, int color);
 
 int		close_game(t_game *game, int flag);
 
