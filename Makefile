@@ -6,7 +6,7 @@
 #    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/09/30 18:44:37 by ahashem          ###   ########.fr        #
+#    Updated: 2024/10/02 11:09:01 by ahashem          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME	=	cub3d
 SRCCP	=	parsing.c parse_file.c parse_textures.c assign_texture.c assign_colour.c \
 			set_colour.c parse_map.c validate_map.c parsing_utils.c
 
-SRCCE	=	hooks.c minimap.c mooooove.c roooootate.c drawing.c
+SRCCE	=	hooks.c minimap.c mooooove.c roooootate.c drawing.c loops.c handle_hooks.c
 
 SRCCU	=	error.c close_game.c init_game.c
 

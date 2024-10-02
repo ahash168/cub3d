@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   roooootate.c                                       :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 22:29:11 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/02 14:25:48 by ahashem          ###   ########.fr       */
+/*   Created: 2024/10/02 11:04:16 by ahashem           #+#    #+#             */
+/*   Updated: 2024/10/02 11:08:31 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int	rotate_player(t_game *game)
+int	loops(t_game *game)
 {
-	if (game->keys.right)
-		game->map.angle += 0.035;
-	if (game->keys.left)
-		game->map.angle += -0.035;
+	handle_hooks(game);
+	rendermap(game);
 	return (0);
 }

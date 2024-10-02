@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/01 10:50:01 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/02 11:08:25 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,16 @@
 *						structs						*
 *****************************************************/
 
+typedef struct s_keys
+{
+	int w;
+	int a;
+	int s;
+	int d;
+	int left;
+	int right;
+} t_keys;
+
 typedef struct s_data
 {
 	void	*img;
@@ -122,6 +132,7 @@ typedef struct s_game
 	t_textures	textures;
 	t_file		file;
 	t_data		img;
+	t_keys		keys;
 }	t_game;
 
 /*****************************************************
@@ -150,10 +161,13 @@ int		empty_line(char *str);
 void	free_array(char **arr);
 
 //						execution					//
+int		loops(t_game *game);
+int		handle_hooks(t_game *game);
 int		x_button(t_game *game);
 int		keypress(int keysym, t_game *game);
-int		move_player(int keypress, t_game *game);
-int		rotate_player(int keypress, t_game *game);
+int		keyrelease(int keysym, t_game *game);
+int		move_player(t_game *game);
+int		rotate_player(t_game *game);
 void	rendermap(t_game *game);
 
 int		close_game(t_game *game, int flag);
