@@ -3,26 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:21:58 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/24 16:48:26 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/02 11:08:24 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	main(int ac, char **av)
+int main(int ac, char **av)
 {
-	t_game	game;
+    t_game	game;
 
-	if (ac != 2)
-		errorer(NULL, 1, USAGE);
-	parsing(av[1], &game);
-	// printf("player_x:	%f\nplayer_y:	%f\n", game.map.player_x, game.map.player_y);
-	game.window = mlx_new_window(game.mlx, game.map.width * 64, game.map.height * 64, "cub3d");
+    if (ac != 2)
+        errorer(NULL, 1, USAGE);
+    parsing(av[1], &game);
+    game.window = mlx_new_window(game.mlx, game.map.width * 64, game.map.height * 64, "cub3d");
 	rendermap(&game);
-	mlx_hook(game.window, 2, 0, move_player, &game);
-	mlx_loop(game.mlx);
+    mlx_hook(game.window, 2, 1L << 0, &keypress, &game);
+    mlx_hook(game.window, 3, 1L << 1, &keyrelease, &game);
+	mlx_hook(game.window, 17, 1L << 2, &x_button, &game);
+	mlx_loop_hook(game.mlx, loops, &game);
+    mlx_loop(game.mlx);
 	close_game(&game, 0);
+    return (0);
 }

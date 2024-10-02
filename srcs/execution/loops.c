@@ -1,14 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cast_ray.c                                         :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 15:59:25 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/09/24 15:59:42 by tabadawi         ###   ########.fr       */
+/*   Created: 2024/10/02 11:04:16 by ahashem           #+#    #+#             */
+/*   Updated: 2024/10/02 11:08:31 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
+int	loops(t_game *game)
+{
+	handle_hooks(game);
+	rendermap(game);
+	return (0);
+}
