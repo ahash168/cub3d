@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/02 11:08:25 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/02 18:34:12 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,8 @@ int		keyrelease(int keysym, t_game *game);
 int		move_player(t_game *game);
 int		rotate_player(t_game *game);
 void	rendermap(t_game *game);
+
+void	rays(t_game *game);
 
 int		close_game(t_game *game, int flag);
 
