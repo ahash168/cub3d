@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rays.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 14:51:46 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/05 21:24:28 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/09 20:17:03 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 #define DR	0.0174533
 #define P2	PI/2
 #define P3	3 * PI/2
+
+void	draw_vertical_line(t_game *game, int x, int h, int window_height, int color)
+{
+	int	y;
+
+	// Start drawing from the bottom of the window
+	y = (window_height - h) / 2;
+	while ((y <= window_height - ((window_height - h ) / 2)) && y >= 0)
+	{
+		pixel_put(&game->img, x, y, color);
+		// mlx_pixel_put(mlx_ptr, win_ptr, x, y, color);
+		y++;
+	}
+}
 
 
 void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
@@ -27,24 +41,15 @@ void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
 
 	while (1)
 	{
-		// Draw the current pixel
 		pixel_put(&game->img, x0, y0, color);
-
-		// If the line has reached its endpoint, break out of the loop
 		if (x0 == x1 && y0 == y1)
 			break;
-
-		// Store the error value before changing it
 		e2 = 2 * err;
-
-		// Adjust error and move the point horizontally or diagonally
 		if (e2 > -dy)
 		{
 			err -= dy;
 			x0 += sx;
 		}
-
-		// Adjust error and move the point vertically or diagonally
 		if (e2 < dx)
 		{
 			err += dx;
@@ -53,206 +58,70 @@ void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
 	}
 }
 
-// void	draw(t_game *game, int center_x, int center_y, int colour)
-// {
-//     int x, y;
+void	draw(t_game *game, int center_x, int center_y, int colour)
+{
+    int x, y;
 
-// 	int radius = 5;
-//     for (y = center_y - radius; y <= center_y + radius; y++)
-//         for (x = center_x - radius; x <= center_x + radius; x++)
-//             if ((x - center_x) * (x - center_x) + (y - center_y) * (y - center_y) <= radius * radius)
-// 				draw_line(&game->img, x, y, colour);
-// }
-
-// float	distance(float px, float py, float rx, float ry)
-// {
-// 	return (sqrt((rx - px) * (rx - px)) + ((ry - py) * (ry - py)));
-// }
-
-// void rays(t_game *game)
-// {
-// 	int dof = 0;
-// 	float ra;
-// 	float atan;
-// 	float ntan;
-// 	float ry, rx;
-// 	int yo, xo;
-// 	int mx, my;
-
-// 	float hx = game->map.player_x;
-// 	float hy = game->map.player_y;
-// 	float disH = 1000000;
-	
-// 	float vx = game->map.player_x;
-// 	float vy = game->map.player_y;
-// 	float disV = 1000000;
-	
-// 	ra = game->map.angle;
-// 	if (ra < 0)
-// 		ra += (2 * PI);
-// 	else if (ra > (2 * PI))
-// 		ra -= (2 * PI);
-
-// 	//	HORIZONTAL
-	
-// 	atan = -1 / tan(ra);
-// 	if (ra > PI)
-// 	{
-// 		ry = (((int)(game->map.player_y * 64) >> 6) << 6) - 0.0001;
-// 		rx = ((game->map.player_y * 64) - ry) * atan + (game->map.player_x * 64);
-// 		yo = -64;
-// 		xo = -yo * atan;
-// 	}
-// 	if (ra < PI)
-// 	{
-// 		ry = (((int)(game->map.player_y * 64) >> 6) << 6) + 64;
-// 		rx = ((game->map.player_y * 64) - ry) * atan + (game->map.player_x * 64);
-// 		yo = 64;
-// 		xo = -yo * atan;
-// 	}
-// 	if (ra == 0 || ra == PI)
-// 	{
-// 		ry = (game->map.player_y * 64);
-// 		rx = (game->map.player_x * 64);
-// 		dof = 8;
-// 	}
-// 	while (dof < 8)
-// 	{
-// 		mx = (int)rx >> 6;
-// 		my = (int)ry >> 6;
-// 		if (((mx >= 0 && mx < game->map.width) && (my >= 0 && my < game->map.height)) && game->map.map[my][mx] == WALL)
-// 		{
-// 			hx = rx;
-// 			hy = ry;
-// 			disH = distance(game->map.player_x, game->map.player_y, hx, hy);
-// 			dof = 8;
-// 		}
-// 		else
-// 		{
-// 			rx += xo;
-// 			ry += yo;
-// 			dof++;
-// 		}
-// 	}
-		
-// 	// VERTICAL	
-
-// 	dof = 0;
-// 	ntan = -tan(ra);
-// 	if (ra > P2 && ra < P3)
-// 	{
-// 		rx = (((int)(game->map.player_x * 64) >> 6) << 6) - 0.0001;
-// 		ry = ((game->map.player_x * 64) - rx) * ntan + (game->map.player_y * 64);
-// 		xo = -64;
-// 		yo = -xo * ntan;
-// 	}
-// 	if (ra < P2 || ra > P3)
-// 	{
-// 		rx = (((int)(game->map.player_x * 64) >> 6) << 6) + 64;
-// 		ry = ((game->map.player_x * 64) - rx) * ntan + (game->map.player_y * 64);
-// 		xo = 64;
-// 		yo = -xo * ntan;
-// 	}
-// 	if (ra == 0 || ra == PI)
-// 	{
-// 		rx = (game->map.player_x * 64);
-// 		ry = (game->map.player_y * 64);
-// 		dof = 8;
-// 	}
-// 	while (dof < 8)
-// 	{
-// 		mx = (int)rx >> 6;
-// 		my = (int)ry >> 6;
-// 		if (((mx >= 0 && mx < game->map.width) && (my >= 0 && my < game->map.height)) && game->map.map[my][mx] == WALL)
-// 		{
-// 				vx = rx;
-// 				vy = ry;
-// 				disV = distance(game->map.player_x, game->map.player_y, vx, vy);
-// 				dof = 8;
-// 		}
-// 		else
-// 		{
-// 			rx += xo;
-// 			ry += yo;
-// 			dof++;
-// 		}
-// 	}
-// 	if (disH < disV)
-// 	{
-// 		rx = hx;
-// 		ry = hy;
-// 	}
-// 	else
-// 	{
-// 		rx = vx;
-// 		ry = vy;
-// 	}
-// 	// printf("mx: %d\nmy: %d\n", mx, my);
-// 	draw(game, rx, ry, 0x2a9df5);
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	int radius = 5;
+    for (y = center_y - radius; y <= center_y + radius; y++)
+        for (x = center_x - radius; x <= center_x + radius; x++)
+            if ((x - center_x) * (x - center_x) + (y - center_y) * (y - center_y) <= radius * radius)
+				pixel_put(&game->img, x, y, colour);
+}
 
 void rays(t_game *game)
 {
+
     int dof;
     float ra;      // Ray angle
     float atan, ntan;
     float rx, ry;  // Horizontal ray positions
     // float vx, vy;  // Vertical ray positions
+	double offset;
+	offset  =  (60.0 / 1920.0) * (PI / 180.0);
+	// printf("offset: %f\n", offset);
+	float f_distance;
     int yo, xo;
     int mx, my;
     float dist_hor, dist_ver;  // Distance to horizontal and vertical intersections
 	int r = 0;
 
     // Initialize the ray angle
-    ra = game->map.angle - DR * 30;  // FOV typically around 60 degrees, DR is the ray delta angle
+    ra = game->map.angle - (DR * 30);  // FOV typically around 60 degrees, DR is the ray delta angle
     if (ra < 0)
         ra += (2 * PI);
     else if (ra > (2 * PI))
         ra -= (2 * PI);
-	while (r < 60)
+
+	// int counter = 0;
+	while (r < 1920)
 	{
-		
+		// if (++counter == 2) {
+			// ra += offset;
+			// if (ra < 0)
+			// 	ra += (2 * PI);
+			// else if (ra > (2 * PI))
+			// 	ra -= (2 * PI);
+		// 	r++;
+		// 	break;
+		// }
+
     	// --- HORIZONTAL RAYCASTING ---
     	dof = 0;
     	atan = -1 / tan(ra);
-    	float hor_rx = 0, hor_ry = 0;  // Horizontal ray hit coordinates
+    	float hx = 0, hy = 0;  // Horizontal ray hit coordinates
     	int hor_hit = 0;  // Flag to check if horizontal hit occurred
 	
     	if (ra > PI)  // Ray is facing up
     	{
-    	    ry = (((int)(game->map.player_y * 64) >> 6) << 6) - 0.0001;  // Round down to nearest grid line
-    	    rx = ((game->map.player_y * 64) - ry) * atan + (game->map.player_x * 64);  // Calculate rx based on ry
+    	    ry = (((int)(game->map.player_y * 64) / 64) * 64) /*- 0.0001*/;  // Round down to nearest grid line
+			rx = ((game->map.player_y * 64) - ry) * atan + (game->map.player_x * 64);  // Calculate rx based on ry
     	    yo = -64;  // Step size for y when moving upward
     	    xo = -yo * atan;  // Step size for x based on atan
     	}
     	else if (ra < PI)  // Ray is facing down
     	{
-    	    ry = (((int)(game->map.player_y * 64) >> 6) << 6) + 64;  // Round up to nearest grid line
+    	    ry = (((int)(game->map.player_y * 64) / 64) * 64) /*+ 64*/;  // Round up to nearest grid line
     	    rx = ((game->map.player_y * 64) - ry) * atan + (game->map.player_x * 64);  // Calculate rx based on ry
     	    yo = 64;  // Step size for y when moving downward
     	    xo = -yo * atan;  // Step size for x based on atan
@@ -268,14 +137,16 @@ void rays(t_game *game)
     	{
     	    mx = (int)(rx) >> 6;  // Convert rx to map grid coordinates
     	    my = (int)(ry) >> 6;  // Convert ry to map grid coordinates
-	
+
+			// printf("(%d, %d) -> ", mx, my);
+			
     	    if (mx >= 0 && mx < game->map.width && my >= 0 && my < game->map.height && game->map.map[my][mx] == WALL)
     	    {
-    	        hor_rx = rx;  // Store horizontal hit coordinates
-    	        hor_ry = ry;
+    	        hx = rx;  // Store horizontal hit coordinates
+    	        hy = ry;
     	        hor_hit = 1;  // Horizontal hit detected
-    	        dist_hor = sqrt((hor_rx - game->map.player_x * 64) * (hor_rx - game->map.player_x * 64) +
-    	                        (hor_ry - game->map.player_y * 64) * (hor_ry - game->map.player_y * 64));  // Calculate horizontal distance
+    	        dist_hor = sqrt((hx - game->map.player_x * 64) * (hx - game->map.player_x * 64) +
+    	                        (hy - game->map.player_y * 64) * (hy - game->map.player_y * 64));  // Calculate horizontal distance
     	        dof = 100;  // Stop raycasting
     	    }
     	    else  // Move to the next grid cell
@@ -294,14 +165,14 @@ void rays(t_game *game)
 	
     	if (ra > PI / 2 && ra < 3 * PI / 2)  // Ray is facing left
     	{
-    	    rx = (((int)(game->map.player_x * 64) >> 6) << 6) - 0.0001;
+    	    rx = (((int)(game->map.player_x * 64) / 64) * 64) /*- 0.0001*/;
     	    ry = ((game->map.player_x * 64) - rx) * ntan + (game->map.player_y * 64);
     	    xo = -64;
     	    yo = -xo * ntan;
     	}
     	else if (ra < PI / 2 || ra > 3 * PI / 2)  // Ray is facing right
     	{
-    	    rx = (((int)(game->map.player_x * 64) >> 6) << 6) + 64;
+    	    rx = (((int)(game->map.player_x * 64) / 64) * 64) /*+ 64*/;
     	    ry = ((game->map.player_x * 64) - rx) * ntan + (game->map.player_y * 64);
     	    xo = 64;
     	    yo = -xo * ntan;
@@ -334,17 +205,40 @@ void rays(t_game *game)
     	        dof++;
     	    }
     	}
-	
+
     	// --- Compare Horizontal and Vertical Hits ---
-    	if (hor_hit && (!ver_hit || dist_hor < dist_ver))  // Horizontal hit is closer
-    	{
-    	    draw_line(game, game->map.player_x * 64, game->map.player_y * 64, hor_rx, hor_ry, 0x2a9df5);  // Draw horizontal hit
-    	}
+    	if (hor_hit && (!ver_hit || dist_hor < dist_ver))
+		{
+			// printf("H: h_hit %d, v_hit %d\nh_dist %f, v_dist %f\n", hor_hit, ver_hit, dist_hor, dist_ver);
+			rx = hx;
+			// hx -= xo;
+			// hy -= yo;
+			f_distance = dist_hor;
+		float line_h = (64 * 600) / f_distance;
+		if (line_h > 600)
+			line_h = 600;
+		draw_vertical_line(game, rx * 64, line_h, 1080, 0xf5428a);
+
+    	    // draw_line(game, game->map.player_x * 64, game->map.player_y * 64, hx, hy, 0x2a9df5);  // Draw horizontal hit
+		}  // Horizontal hit is closer
+
     	else if (ver_hit)  // Vertical hit is closer
-    	{
-    	    draw_line(game, game->map.player_x * 64, game->map.player_y * 64, vx, vy, 0x2a9df5);  // Draw vertical hit
-    	}
-		ra += DR;
+		{
+			// printf("V: h_hit %d, v_hit %d\nh_dist %f, v_dist %f\n", hor_hit, ver_hit, dist_hor, dist_ver);
+			rx = vx;
+			// vx -= xo;
+			// vy -= yo;
+			f_distance = dist_ver;
+		float line_h = (64 * 20) / f_distance;
+		if (line_h > 20)
+			line_h = 20;
+		draw_vertical_line(game, rx * 64, line_h, 1080, 0x2a9df5);
+	
+    	    //  draw_line(game, game->map.player_x * 64, game->map.player_y * 64, vx, vy, 0x2a9df5);  // Draw vertical hit
+		}
+
+		
+		ra += offset;
 		if (ra < 0)
     	    ra += (2 * PI);
     	else if (ra > (2 * PI))

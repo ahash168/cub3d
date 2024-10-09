@@ -6,7 +6,7 @@
 #    By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/10/02 18:33:49 by tabadawi         ###   ########.fr        #
+#    Updated: 2024/10/09 20:16:27 by tabadawi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ OBJ		=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -Werror -g3
 
-# CFLAGS	+=	-fsanitize=address -g3
+CFLAGS	+=	-fsanitize=address
 
 LIBFT	=	includes/libft/libft.a
 
