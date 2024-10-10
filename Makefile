@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/10/02 18:33:49 by tabadawi         ###   ########.fr        #
+#    Updated: 2024/10/10 20:41:22 by ahashem          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME	=	cub3d
 SRCCP	=	parsing.c parse_file.c parse_textures.c assign_texture.c assign_colour.c \
 			set_colour.c parse_map.c validate_map.c parsing_utils.c
 
-SRCCE	=	hooks.c minimap.c mooooove.c roooootate.c drawing.c loops.c handle_hooks.c rays.c
+SRCCE	=	hooks.c minimap.c mooooove.c roooootate.c drawing.c loops.c handle_hooks.c rays.c raaaaays.c
 
 SRCCU	=	error.c close_game.c init_game.c
 
@@ -28,7 +28,7 @@ OBJ		=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -Werror -g3
 
-# CFLAGS	+=	-fsanitize=address -g3
+CFLAGS	+=	-fsanitize=address
 
 LIBFT	=	includes/libft/libft.a
 

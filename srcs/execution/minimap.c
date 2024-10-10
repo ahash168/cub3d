@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/02 18:35:53 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/10 20:04:51 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,8 @@ void	rendermap(t_game *game)
 	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bpp, &game->img.line_length, &game->img.endian);
 	draw_map(game);
 	draw_player(game, game->map.player_x * 64, game->map.player_y * 64, 0x2a9df5);
-    rays(game);
+    // rays(game);
+    raaaaays(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->img.img, 0, 0);
 	mlx_destroy_image(game->mlx, game->img.img);
 }
