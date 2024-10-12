@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raaaaays.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/10 20:52:05 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/12 14:01:06 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,20 @@
 #define P3	3 * PI/2
 #define WINDOW_W 1920
 #define WINDOW_H 1080
+
+void	draw_vertical_line(t_game *game, int x, float h, int window_height, int color)
+{
+	int	y;
+
+	// Start drawing from the bottom of the window
+	y = (window_height - h) / 2;
+	while ((y <= window_height - ((window_height - h ) / 2)) && y >= 0)
+	{
+		pixel_put(&game->img, x, y, color);
+		// mlx_pixel_put(mlx_ptr, win_ptr, x, y, color);
+		y++;
+	}
+}
 
 void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
 {
@@ -28,24 +42,15 @@ void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
 
 	while (1)
 	{
-		// Draw the current pixel
 		pixel_put(&game->img, x0, y0, color);
-
-		// If the line has reached its endpoint, break out of the loop
 		if (x0 == x1 && y0 == y1)
 			break;
-
-		// Store the error value before changing it
 		e2 = 2 * err;
-
-		// Adjust error and move the point horizontally or diagonally
 		if (e2 > -dy)
 		{
 			err -= dy;
 			x0 += sx;
 		}
-
-		// Adjust error and move the point vertically or diagonally
 		if (e2 < dx)
 		{
 			err += dx;
@@ -73,7 +78,7 @@ int inter_check(float angle, float *inter, float *step, int is_horizon) // check
 {
 	if (is_horizon)
 	{
-		if (angle > 0 && angle < M_PI)
+		if (angle > 0 && angle < PI)
 		{
 			*inter += 64;
 			return (-1);
@@ -82,7 +87,7 @@ int inter_check(float angle, float *inter, float *step, int is_horizon) // check
 	}
 	else
 	{
-		if (!(angle > M_PI / 2 && angle < 3 * M_PI / 2)) 
+		if (!(angle > P2 && angle < P3)) 
 		{
 			*inter += 64;
 			return (-1);
@@ -115,20 +120,19 @@ int	get_h_inter(t_game *game, float ray_angle, float *hx, float *hy)
 	float y_step;
 	int pixel;
 
-	x_step = 64;
-	y_step = 64 / tan(ray_angle);
-	*hy = floor(game->map.player_y * 64);
-	// *hy  = (((int)(game->map.player_y * 64) / 64) * 64);
-	*hx = (game->map.player_x * 64) + (*hy - (game->map.player_y * 64)) / tan(ray_angle);
+	y_step = 64;
+	x_step = 64 / tan(ray_angle);
+	*hy = floor((game->map.player_y * 64) / 64) * 64;
 	pixel = inter_check(ray_angle, hy, &y_step, 1);
+	*hx = ((game->map.player_x * 64)) + (*hy - ((game->map.player_y * 64))) / tan(ray_angle);
 	if ((unit_circle(ray_angle, 'y') && x_step > 0) || (!unit_circle(ray_angle, 'y') && x_step < 0))
 		x_step *= -1;
-	while (find_wall(*hx, *hy, game))
+	while (find_wall(*hx, *hy - pixel, game))
 	{
 		*hx += x_step;
 		*hy += y_step;
 	}
-	return (sqrt(pow(*hx - (game->map.player_x * 64), 2) + pow(*hy - (game->map.player_y * 64), 2)));
+	return (sqrt(pow(*hx - ((game->map.player_x * 64)), 2) + pow(*hy - ((game->map.player_y * 64)), 2)));
 }
 
 int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
@@ -136,20 +140,21 @@ int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
 	float x_step;
 	float y_step;
 	int pixel;
-	
+
 	x_step = 64;
 	y_step = 64 * tan(ray_angle);
-	*vx = floor(game->map.player_x * 64);
-	// *vx = (((int)(game->map.player_x * 64) / 64) * 64);
+	*vx = floor((game->map.player_x * 64) / 64) * 64;
+	pixel = inter_check(ray_angle, vx, &x_step, 0);
 	*vy = (game->map.player_y * 64) + (*vx - (game->map.player_x * 64)) * tan(ray_angle);
-	pixel = inter_check(ray_angle, vx, &x_step, 1);
-	if ((unit_circle(ray_angle, 'y') && x_step > 0) || (!unit_circle(ray_angle, 'y') && x_step < 0))
-		x_step *= -1;
-	while (find_wall(*vx, *vy, game))
+	// printf("first vy: %f\n", tan(ray_angle));
+	if ((unit_circle(ray_angle, 'x') && y_step < 0) || (!unit_circle(ray_angle, 'x') && y_step > 0))
+		y_step *= -1;
+	while (find_wall(*vx - pixel, *vy, game))
 	{
 		*vx += x_step;
 		*vy += y_step;
 	}
+	// printf("last vy: %f\n", *vy);
 	return (sqrt(pow(*vx - (game->map.player_x * 64), 2) + pow(*vy - (game->map.player_y * 64), 2)));
 }
 
@@ -161,16 +166,15 @@ void raaaaays(t_game *game)
 	float ray;
 	float ray_angle;
 	float offset;
-	float hx = 0;
-	float hy = 0;
-	float vx = 0;
-	float vy = 0;
-	
-	fov = 60;
-	h_inter = 0;
-	v_inter = 0;
+	float hx;
+	float hy;
+	float vx;
+	float vy;
+	fov = 60.00;
+	h_inter = 0.0;
+	v_inter = 0.0;
 	ray = 0;
-	ray_angle = game->map.angle - (DR * (fov / 2));
+	ray_angle = game->map.angle - (DR * (fov / 2.00));
 	if (ray_angle < 0)
 		ray_angle += (2 * PI);
 	else if (ray_angle > (2 * PI))
@@ -180,18 +184,27 @@ void raaaaays(t_game *game)
 	{
 		h_inter = get_h_inter(game, ray_angle, &hx, &hy);
 		v_inter = get_v_inter(game, ray_angle, &vx, &vy);
-		if (v_inter < h_inter)
+		if (v_inter <= h_inter)
 		{
-			printf("vx: %f	vy: %f\npx: %f	py: %f\n\n\n", vx / 64, vy / 64, game->map.player_x, game->map.player_y);
-			draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), vx, vy, 0x2a9df5);
+			float line_h = (64.00 * 600.00) / v_inter;
+			if (line_h > 1080.00)
+				line_h = 1080.00;
+			draw_vertical_line(game, ray, line_h, 1080.00, 0xb8bfc2);
+			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), vx, vy, 0x2a9df5);
 		}
 		else
-			draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), hx, hy, 0x2a9df5);
+		{
+			float line_h = (64.00 * 600.00) / h_inter;
+			if (line_h > 1080)
+				line_h = 1080.00;
+			draw_vertical_line(game, ray, line_h, 1080.00, 0x2a9df5);
+			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), hx, hy, 0x2a9df5);
+		}
+		ray++;
 		ray_angle += offset;
 		if (ray_angle < 0)
 			ray_angle += (2 * PI);
 		else if (ray_angle > (2 * PI))
 			ray_angle -= (2 * PI);
-		ray++;
 	}
 }
