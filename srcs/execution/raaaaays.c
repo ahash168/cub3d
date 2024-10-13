@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/13 21:29:52 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/13 22:06:17 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,22 @@
 #define P3	3 * PI/2
 #define WINDOW_W 1920
 #define WINDOW_H 1080
-#define MINIMUM 128
-#define MAXIMUM 192
+#define MINIMUM 200
+#define MAXIMUM 400
 
 int	change_shade(int colour, float dist)
 {
-	// if (dist > MAXIMUM)
-	// 	return (0X00000000);
-	// if (dist < MINIMUM)
-	// 	return (colour);
-	float shade_factor = 1.00 / (1.00 + dist * 0.0035);
+	float shade_factor = 0.0;
+	if (dist <= MAXIMUM)
+		shade_factor = 0.0;;
+	if (dist <= MINIMUM)
+		shade_factor = 1.0;
+	else
+		shade_factor = 1.0 - ((dist - MINIMUM) / (MAXIMUM - MINIMUM));
+	if(shade_factor < 0.0)
+		shade_factor = 0.0;
+	if(shade_factor > 1.0)
+		shade_factor = 1.0;
 	unsigned int trgb = colour; // Replace this with your color
 	unsigned char r = (trgb >> 16) & 0xFF;
 	unsigned char g = (trgb >> 8) & 0xFF;
@@ -219,6 +225,7 @@ void raaaaays(t_game *game)
 		{
 			final = v_inter * cos(ca);
 			colour = 0x00b8bfc2;
+			// colour *= v_inter / 100;
 			colour = change_shade(colour, final);
 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), vx, vy, 0x2a9df5);
 		}
@@ -226,6 +233,7 @@ void raaaaays(t_game *game)
 		{
 			final = h_inter * cos(ca);
 			colour  = 0x002a9df5;
+			// colour *= h_inter / 100;
 			colour = change_shade(colour, final);
 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), hx, hy, 0x2a9df5);
 		}
