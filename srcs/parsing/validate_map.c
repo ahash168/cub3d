@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:54:07 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/12 11:52:02 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/13 15:34:27 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	check_player(t_map *map, t_game *game)
 			{
 				if (!map->player)
 				{
-					map->player_y = i;
-					map->player_x = j;
+					map->player_y = i + 0.5;
+					map->player_x = j + 0.5;
 					map->player = map->map[i][j];
 					map->map[i][j] = '0';
 				}

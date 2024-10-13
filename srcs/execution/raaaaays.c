@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/12 14:01:06 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/13 21:29:52 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,39 @@
 #define P3	3 * PI/2
 #define WINDOW_W 1920
 #define WINDOW_H 1080
+#define MINIMUM 128
+#define MAXIMUM 192
+
+int	change_shade(int colour, float dist)
+{
+	// if (dist > MAXIMUM)
+	// 	return (0X00000000);
+	// if (dist < MINIMUM)
+	// 	return (colour);
+	float shade_factor = 1.00 / (1.00 + dist * 0.0035);
+	unsigned int trgb = colour; // Replace this with your color
+	unsigned char r = (trgb >> 16) & 0xFF;
+	unsigned char g = (trgb >> 8) & 0xFF;
+	unsigned char b = trgb & 0xFF;
+	
+	// Apply shading
+	r = (unsigned char)(r * shade_factor);
+	g = (unsigned char)(g * shade_factor);
+	b = (unsigned char)(b * shade_factor);
+	
+	// Combine back into a TRGB value
+	unsigned int shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
+	return (shaded_color);
+}
 
 void	draw_vertical_line(t_game *game, int x, float h, int window_height, int color)
 {
 	int	y;
 
-	// Start drawing from the bottom of the window
 	y = (window_height - h) / 2;
-	while ((y <= window_height - ((window_height - h ) / 2)) && y >= 0)
+	while ((y < window_height - ((window_height - h ) / 2)) && y >= 0)
 	{
 		pixel_put(&game->img, x, y, color);
-		// mlx_pixel_put(mlx_ptr, win_ptr, x, y, color);
 		y++;
 	}
 }
@@ -160,7 +182,7 @@ int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
 
 void raaaaays(t_game *game)
 {
-	float fov;
+	float fov_rd;
 	float h_inter;
 	float v_inter;
 	float ray;
@@ -170,36 +192,48 @@ void raaaaays(t_game *game)
 	float hy;
 	float vx;
 	float vy;
-	fov = 60.00;
+	fov_rd = 60.00 * DR;
 	h_inter = 0.0;
 	v_inter = 0.0;
 	ray = 0;
-	ray_angle = game->map.angle - (DR * (fov / 2.00));
+	ray_angle = game->map.angle - (fov_rd / 2.00);
 	if (ray_angle < 0)
 		ray_angle += (2 * PI);
 	else if (ray_angle > (2 * PI))
 		ray_angle -= (2 * PI);
-	offset = (DR * fov) / WINDOW_W;
+	offset = fov_rd / WINDOW_W;
+	float final;
+	float ca;
+	int colour;
+	float pierce = tan(fov_rd / 2.00);
 	while (ray < WINDOW_W)
 	{
+		ca = game->map.angle - ray_angle;
+		if (ca < 0)
+			ca += (2 * PI);
+		else if (ca > (2 * PI))
+			ca -= (2 * PI);
 		h_inter = get_h_inter(game, ray_angle, &hx, &hy);
 		v_inter = get_v_inter(game, ray_angle, &vx, &vy);
-		if (v_inter <= h_inter)
+		if (v_inter < h_inter)
 		{
-			float line_h = (64.00 * 600.00) / v_inter;
-			if (line_h > 1080.00)
-				line_h = 1080.00;
-			draw_vertical_line(game, ray, line_h, 1080.00, 0xb8bfc2);
+			final = v_inter * cos(ca);
+			colour = 0x00b8bfc2;
+			colour = change_shade(colour, final);
 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), vx, vy, 0x2a9df5);
 		}
 		else
 		{
-			float line_h = (64.00 * 600.00) / h_inter;
-			if (line_h > 1080)
-				line_h = 1080.00;
-			draw_vertical_line(game, ray, line_h, 1080.00, 0x2a9df5);
+			final = h_inter * cos(ca);
+			colour  = 0x002a9df5;
+			colour = change_shade(colour, final);
 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), hx, hy, 0x2a9df5);
 		}
+		// float wall_h = (64 * 1080) / final;
+		float wall_h = (64 / final) * (960 / pierce);
+		if (wall_h > 1080)
+			wall_h = 1080;
+		draw_vertical_line(game, ray, wall_h, 1080, colour);
 		ray++;
 		ray_angle += offset;
 		if (ray_angle < 0)
