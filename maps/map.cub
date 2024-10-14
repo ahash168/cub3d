@@ -8,9 +8,9 @@ SO   ./textures/xpm/wall.xpm
            WE   ./textures/xpm/wall.xpm
            EA    ./textures/xpm/wall.xpm
 
-             F  ./textures/xpm/wall.xpm
+             F  0,0,0
 
-    C 89,30,222
+    C 0,0,0
 
 
 
