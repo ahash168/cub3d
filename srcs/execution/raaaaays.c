@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/14 21:54:30 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:56:39 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,19 @@ int	change_shade(int colour, float dist)
 
 int	shade_floor(int colour, int y, int window_height, int final)
 {
-	float shade_factor = 0.0;
+	float shade_factor = 1.0;
 	float minimum = 50.0;
+	float maximum = 350.0;
 	
-	if (window_height - y < minimum)
+	(void)final;
+	(void)y;
+	(void)window_height;
+	if (window_height - y <= minimum)
 		shade_factor = 1.0;
-	else if (window_height - y > final)
+	else if (window_height - y >= maximum)
 		shade_factor = 0.0;
 	else
-		shade_factor = 1.0 - ((y - minimum) / (final - minimum));
+		shade_factor = 1.0 - (((window_height - y) - minimum) / (maximum - minimum));
 
 	if (shade_factor < 0.0f)
         shade_factor = 0.0f;
@@ -74,13 +78,14 @@ int	shade_floor(int colour, int y, int window_height, int final)
 	b = (unsigned char)(b * shade_factor);
 
 	unsigned int shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
+
 	return (shaded_color);
 }
 
-void	draw_vertical_line(t_game *game, int x, float h, int window_height, int color)
+void	draw_vertical_line(t_game *game, int x, float h, int window_height, int color, float finale)
 {
 	int	y;
-
+	(void)finale;
 	int i = 0;
 	int final;
 	y = (window_height - h) / 2;
@@ -97,7 +102,10 @@ void	draw_vertical_line(t_game *game, int x, float h, int window_height, int col
 	final = y;
 	while (y < window_height)
 	{
-		pixel_put(&game->img, x, y, shade_floor(game->textures.floor, y, 1080, final));
+
+		int clr = shade_floor(game->textures.floor, y, 1080, finale);
+		// int clr = 0x000000;
+		pixel_put(&game->img, x, y, clr);
 		y++;
 	}
 }
@@ -286,7 +294,7 @@ void raaaaays(t_game *game)
 		float wall_h = (64 / final) * (960 / pierce);
 		if (wall_h > 1080)
 			wall_h = 1080;
-		draw_vertical_line(game, ray, wall_h, 1080, colour);
+		draw_vertical_line(game, ray, wall_h, 1080, colour, final);
 		ray++;
 		ray_angle += offset;
 		if (ray_angle < 0)
