@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/02 18:34:12 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/09 19:29:24 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ int		rotate_player(t_game *game);
 void	rendermap(t_game *game);
 
 void	rays(t_game *game);
+void	raaaaays(t_game *game);
 
 int		close_game(t_game *game, int flag);
 
