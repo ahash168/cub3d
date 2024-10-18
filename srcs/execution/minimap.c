@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/14 13:18:01 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/18 19:35:06 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,16 @@ void	draw_map(t_game *game)
 	}	
 }
 
+double	time_difference(struct timespec *start, struct timespec *end)
+{
+    double start_sec;
+    double end_sec;
+	
+	start_sec = start->tv_sec + start->tv_nsec / 1.0e9;
+	end_sec = end->tv_sec + end->tv_nsec / 1.0e9;
+    return (end_sec - start_sec);
+}
+
 void	rendermap(t_game *game)
 {
 	game->img.img = mlx_new_image(game->mlx, 1920, 1080);
@@ -136,6 +146,12 @@ void	rendermap(t_game *game)
 	// draw_player(game, game->map.player_x * 64, game->map.player_y * 64, 0x2a9df5);
     raaaaays(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->img.img, 0, 0);
+	clock_gettime(CLOCK_MONOTONIC, &(game->counter.now));
+	game->counter.c = time_difference(&(game->counter.previous), &(game->counter.now));
+	if (game->counter.c >= 0.3)
+	{
+		animation(game);
+		game->counter.previous = game->counter.now;
+	}
 	mlx_destroy_image(game->mlx, game->img.img);
 }
-

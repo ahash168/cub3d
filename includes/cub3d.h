@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/09 19:29:24 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/17 14:49:02 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <math.h>
+# include <time.h>
 
 /*****************************************************
 *					definitions						*
@@ -62,6 +63,7 @@
 # define XTRA_PLYR	"Broddie, you can only have one player.\n"
 # define NO_PLYR	"Soo.... u dont wanna play??????????????\n"
 # define VOID		"You cant go into the void bruv\n"
+# define IMG		"Image could not load.\n"
 
 /*****************************************************
 *						structs						*
@@ -114,15 +116,29 @@ typedef struct	s_txtr
 	void	*floor;
 }	t_txtr;
 
+typedef struct	s_sprite
+{
+	void	*glow;
+	void	*stick[5];
+}	t_sprite;
+
 typedef struct s_textures
 {
-	t_txtr	pointers;
-	t_txtr	strings;
-	int		floor;
-	int		ceiling;
-	int		f_arr[3];
-	int		c_arr[3];
+	t_txtr		pointers;
+	t_txtr		strings;
+	int			floor;
+	int			ceiling;
+	int			f_arr[3];
+	int			c_arr[3];
+	t_sprite	s;
 }	t_textures;
+
+typedef struct s_counter
+{
+	double			c;
+	struct timespec	previous;
+	struct timespec	now;
+}	t_counter;
 
 typedef struct s_game
 {
@@ -133,6 +149,7 @@ typedef struct s_game
 	t_file		file;
 	t_data		img;
 	t_keys		keys;
+	t_counter	counter;
 }	t_game;
 
 /*****************************************************
@@ -172,6 +189,9 @@ void	rendermap(t_game *game);
 
 void	rays(t_game *game);
 void	raaaaays(t_game *game);
+
+void	make_images(t_game *game);
+int		animation(t_game *game);
 
 int		close_game(t_game *game, int flag);
 
