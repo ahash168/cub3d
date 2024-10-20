@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/17 14:49:02 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/20 17:12:44 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,23 +133,16 @@ typedef struct s_textures
 	t_sprite	s;
 }	t_textures;
 
-typedef struct s_counter
-{
-	double			c;
-	struct timespec	previous;
-	struct timespec	now;
-}	t_counter;
-
 typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
+	int			counter;
 	t_map		map;
 	t_textures	textures;
 	t_file		file;
 	t_data		img;
 	t_keys		keys;
-	t_counter	counter;
 }	t_game;
 
 /*****************************************************

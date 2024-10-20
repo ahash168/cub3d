@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/18 19:35:06 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/20 17:29:22 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,18 +140,20 @@ double	time_difference(struct timespec *start, struct timespec *end)
 
 void	rendermap(t_game *game)
 {
+	game->counter = (game->counter + 1) % (4 * 10);
 	game->img.img = mlx_new_image(game->mlx, 1920, 1080);
 	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bpp, &game->img.line_length, &game->img.endian);
 	// draw_map(game);
 	// draw_player(game, game->map.player_x * 64, game->map.player_y * 64, 0x2a9df5);
     raaaaays(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->img.img, 0, 0);
-	clock_gettime(CLOCK_MONOTONIC, &(game->counter.now));
-	game->counter.c = time_difference(&(game->counter.previous), &(game->counter.now));
-	if (game->counter.c >= 0.3)
-	{
-		animation(game);
-		game->counter.previous = game->counter.now;
-	}
+	mlx_put_image_to_window(game->mlx, game->window, game->textures.s.stick[game->counter / 10], 1100, 790);
+	// clock_gettime(CLOCK_MONOTONIC, &(game->counter.now));
+	// game->counter.c = time_difference(&(game->counter.previous), &(game->counter.now));
+	// if (game->counter.c >= 0.3)
+	// {
+	// 	animation(game);
+	// 	game->counter.previous = game->counter.now;
+	// }
 	mlx_destroy_image(game->mlx, game->img.img);
 }

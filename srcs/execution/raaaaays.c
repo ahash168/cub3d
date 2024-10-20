@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/15 11:56:39 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:28:11 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ void	draw_vertical_line(t_game *game, int x, float h, int window_height, int col
 	while (y < window_height)
 	{
 
-		int clr = shade_floor(game->textures.floor, y, 1080, finale);
-		// int clr = 0x000000;
+		// int clr = shade_floor(game->textures.floor, y, 1080, finale);
+		int clr = 0x000000;
 		pixel_put(&game->img, x, y, clr);
 		y++;
 	}
@@ -275,18 +275,18 @@ void raaaaays(t_game *game)
 		if (v_inter < h_inter)
 		{
 			final = v_inter * cos(no_fishy);
-			colour = 0x9c9358;
-			// colour = 0x00b8bfc2;
-			// colour *= v_inter / 100;
+			// colour = 0x9c9358;
+			colour = 0x00b8bfc2;
+			colour *= v_inter / 100;
 			colour = change_shade(colour, final);
 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), vx, vy, 0x2a9df5);
 		}
 		else
 		{
 			final = h_inter * cos(no_fishy);
-			colour = 0x9c9358;
-			// colour  = 0x002a9df5;
-			// colour *= h_inter / 100;
+			// colour = 0x9c9358;
+			colour  = 0x002a9df5;
+			colour *= h_inter / 100;
 			colour = change_shade(colour, final);
 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), hx, hy, 0x2a9df5);
 		}

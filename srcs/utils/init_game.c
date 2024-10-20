@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:36:50 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/17 12:38:32 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/20 17:13:00 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,20 @@ void	init_map(t_map *map)
 	map->player = 0;
 }
 
-void	init_counter(t_counter *counter)
-{
-	clock_gettime(CLOCK_MONOTONIC, &(counter->previous));
-	clock_gettime(CLOCK_MONOTONIC, &(counter->now));
-	counter->c = 0;
-}
+// void	init_counter(t_counter *counter)
+// {
+// 	clock_gettime(CLOCK_MONOTONIC, &(counter->previous));
+// 	clock_gettime(CLOCK_MONOTONIC, &(counter->now));
+// 	counter->c = 0;
+// }
 
 void	init_game(t_game *game)
 {
 	init_file(&game->file);
 	init_textures(&game->textures);
 	init_map(&game->map);
-	init_counter(&game->counter);
+	game->counter = 0;
+	// init_counter(&game->counter);
 	game->mlx = mlx_init();
 	game->window = NULL;
 }
