@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/20 20:14:32 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/20 22:08:03 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int get_pixel_color_from_texture(t_data *texture, int x, int y)
     return (color);
 }
 
-void	draw_vertical_line(t_game *game, int x, float h, int window_height, float distance, t_data *texture)
+void	draw_vertical_line(t_game *game, int x, float h, int window_height, float distance, t_data *texture, float huh)
 {
 	int	y;
 	int i = 0;
@@ -133,7 +133,7 @@ void	draw_vertical_line(t_game *game, int x, float h, int window_height, float d
 	
 	// Calculate the starting point for drawing the wall slice
 	y = (window_height - h) / 2;
-	tex_x = (int)(x % tex_width);  // Calculate the X coordinate in the texture
+	tex_x = (int)((int)(huh * 4) % tex_width);  // Calculate the X coordinate in the texture
 	
 	// Draw the ceiling
 	while (i < y)
@@ -402,14 +402,16 @@ void raaaaays(t_game *game)
 			no_fishy -= (2 * PI);
 		h_inter = get_h_inter(game, ray_angle, &hx, &hy);
 		v_inter = get_v_inter(game, ray_angle, &vx, &vy);
-
+		float intercept = 0;
 		if (v_inter < h_inter)
 		{
+			intercept = vx;
 			final = v_inter * cos(no_fishy);
 			current_texture = &game->textures.texture[W_N]; // Use east texture for vertical walls
 		}
 		else
 		{
+			intercept = hx;
 			final = h_inter * cos(no_fishy);
 			current_texture = &game->textures.texture[N_N]; // Use north texture for horizontal walls
 		}
@@ -420,7 +422,7 @@ void raaaaays(t_game *game)
 			wall_h = 1080;
 
 		// Draw the wall with texture
-		draw_vertical_line(game, ray, wall_h, 1080, final, current_texture);
+		draw_vertical_line(game, ray, wall_h, 1080, final, current_texture, intercept);
 		
 		ray++;
 		ray_angle += offset;
