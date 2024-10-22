@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/10/15 11:27:12 by tabadawi         ###   ########.fr        #
+#    Updated: 2024/10/19 12:53:03 by ahashem          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ NAME	=	cub3d
 SRCCP	=	parsing.c parse_file.c parse_textures.c assign_texture.c assign_colour.c \
 			set_colour.c parse_map.c validate_map.c parsing_utils.c
 
-SRCCE	=	hooks.c minimap.c mooooove.c roooootate.c drawing.c loops.c handle_hooks.c rays.c raaaaays.c
+SRCCE	=	hooks.c minimap.c mooooove.c roooootate.c drawing.c loops.c handle_hooks.c \
+			rays.c raaaaays.c make_images.c
 
 SRCCU	=	error.c close_game.c init_game.c
 

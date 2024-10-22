@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:46:57 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/02 11:15:47 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/20 21:40:12 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,22 @@ int	keyrelease(int keysym, t_game *game)
 		game->keys.left = 0;
 	if (keysym == RIGHT)
 		game->keys.right = 0;
+	return (0);
+}
+
+int	mouse(int x, int y, t_game *game)
+{
+	(void) y;
+	if (game->keys.right && game->keys.left)
+		return (0);
+	if (x < (1920 / 8))
+		game->keys.left = 1;
+	else if (x >  7 * (1920 / 8))
+		game->keys.right = 1;
+	else
+	{
+		game->keys.left = 0;
+		game->keys.right = 0;
+	}
 	return (0);
 }

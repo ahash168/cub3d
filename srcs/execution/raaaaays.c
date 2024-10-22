@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/15 11:56:39 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:50:30 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 #define WINDOW_W 1920
 #define WINDOW_H 1080
 #define MINIMUM 50
-#define MAXIMUM 250
+#define MAXIMUM 350
+
 
 int	change_shade(int colour, float dist)
 {
@@ -38,6 +39,7 @@ int	change_shade(int colour, float dist)
 	unsigned char b = trgb & 0xFF;
 	
 	// Apply shading
+	// printf("hi\n\n");
 	r = (unsigned char)(r * shade_factor);
 	g = (unsigned char)(g * shade_factor);
 	b = (unsigned char)(b * shade_factor);
@@ -82,33 +84,118 @@ int	shade_floor(int colour, int y, int window_height, int final)
 	return (shaded_color);
 }
 
-void	draw_vertical_line(t_game *game, int x, float h, int window_height, int color, float finale)
-{
-	int	y;
-	(void)finale;
-	int i = 0;
-	int final;
-	y = (window_height - h) / 2;
-	while (i < y)
-	{
-		pixel_put(&game->img, x, i, game->textures.ceiling);
-		i++;
-	}
-	while ((y < window_height - ((window_height - h ) / 2)) && y >= 0)
-	{
-		pixel_put(&game->img, x, y, color);
-		y++;
-	}
-	final = y;
-	while (y < window_height)
-	{
+// void	draw_vertical_line(t_game *game, int x, float h, int window_height, int color, float finale)
+// {
+// 	int	y;
+// 	(void)finale;
+// 	int i = 0;
+// 	int final;
+// 	y = (window_height - h) / 2;
+// 	while (i < y)
+// 	{
+// 		pixel_put(&game->img, x, i, game->textures.ceiling);
+// 		i++;
+// 	}
+// 	while ((y < window_height - ((window_height - h ) / 2)) && y >= 0)
+// 	{
+// 		pixel_put(&game->img, x, y, color);
+// 		y++;
+// 	}
+// 	final = y;
+// 	while (y < window_height)
+// 	{
 
-		int clr = shade_floor(game->textures.floor, y, 1080, finale);
-		// int clr = 0x000000;
-		pixel_put(&game->img, x, y, clr);
-		y++;
+// 		int clr = shade_floor(game->textures.floor, y, 1080, finale);
+// 		// int clr = 0x000000;
+// 		pixel_put(&game->img, x, y, clr);
+// 		y++;
+// 	}
+// }
+
+int get_pixel_color_from_texture(t_data *texture, int x, int y)
+{
+    char *pixel;
+    int color;
+
+    pixel = texture->addr + (y * texture->line_length + x * (texture->bpp / 8));
+    color = *(unsigned int *)pixel;
+    return (color);
+}
+
+void	draw_vertical_line(t_game *game, int x, float h, int window_height, float distance, t_data *texture, float huh)
+{
+	int	y = 0;
+	int i = 0;
+	int tex_x, tex_y;
+	int tex_height = 256; // Assuming all walls have the same height
+	int tex_width = 256;   // Assuming all walls have the same width
+	int final;
+	
+	// Calculate the starting point for drawing the wall slice
+	// if (h <= window_height)
+	if (h < window_height)
+	{
+		y = (window_height - h) / 2;
+		tex_x = (int)((int)(huh * 4) % tex_width);  // Calculate the X coordinate in the texture
+		
+		// Draw the ceiling
+		while (i < y)
+		{
+			pixel_put(&game->img, x, i, game->textures.ceiling);
+			i++;
+		}
+		
+		// Draw the wall with texture
+		while (y < window_height - ((window_height - h) / 2) && y >= 0)
+		{
+			// Calculate the corresponding Y coordinate in the texture
+			tex_y = (int)((y - (window_height - h) / 2) * tex_height / h);
+
+			// Get the pixel color from the texture
+			int color = get_pixel_color_from_texture(texture, tex_x, tex_y);
+			// printf ("colour: %x\n\n", color);
+			
+			// Apply shading based on the distance
+			color = change_shade(color, distance);
+			
+			// Draw the pixel on the screen
+			pixel_put(&game->img, x, y, color);
+			y++;
+		}
+		final = y;
+		
+		// Draw the floor
+		while (y < window_height)
+		{
+			int clr = shade_floor(game->textures.floor, y, window_height, distance);
+			pixel_put(&game->img, x, y, clr);
+			y++;
+		}
+	}
+	else if (h > window_height)
+	{
+		float factor = tex_height / h;
+		int start = ((int)h - window_height) / 2;
+		int temp  = start;
+		tex_x = (int)((int)(huh * 4) % tex_width);  // Calculate the X coordinate in the texture
+		y = 0;
+		while ((start < h - temp) && y >= 0 && y < window_height)
+		{
+			// Calculate the corresponding Y coordinate in the texture
+			tex_y = (int)(start * factor);
+			// Get the pixel color from the texture
+			int color = get_pixel_color_from_texture(texture, tex_x, tex_y);
+			// printf ("colour: %x\n\n", color);
+			// Apply shading based on the distance
+			color = change_shade(color, distance);
+			// Draw the pixel on the screen
+			pixel_put(&game->img, x, y, color);
+			start++;
+			y++;
+		}
 	}
 }
+
 
 void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
 {
@@ -237,6 +324,74 @@ int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
 	return (sqrt(pow(*vx - (game->map.player_x * 64), 2) + pow(*vy - (game->map.player_y * 64), 2)));
 }
 
+// void raaaaays(t_game *game)
+// {
+// 	float fov_rd;
+// 	float h_inter;
+// 	float v_inter;
+// 	float ray;
+// 	float ray_angle;
+// 	float offset;
+// 	float hx;
+// 	float hy;
+// 	float vx;
+// 	float vy;
+// 	fov_rd = 60.00 * DR;
+// 	h_inter = 0.0;
+// 	v_inter = 0.0;
+// 	ray = 0;
+// 	ray_angle = game->map.angle - (fov_rd / 2.00);
+// 	if (ray_angle < 0)
+// 		ray_angle += (2 * PI);
+// 	else if (ray_angle > (2 * PI))
+// 		ray_angle -= (2 * PI);
+// 	offset = fov_rd / WINDOW_W;
+// 	float final;
+// 	float no_fishy;
+// 	int colour;
+// 	float pierce = tan(fov_rd / 2.00);
+// 	while (ray < WINDOW_W)
+// 	{
+// 		no_fishy = game->map.angle - ray_angle;
+// 		if (no_fishy < 0)
+// 			no_fishy += (2 * PI);
+// 		else if (no_fishy > (2 * PI))
+// 			no_fishy -= (2 * PI);
+// 		h_inter = get_h_inter(game, ray_angle, &hx, &hy);
+// 		v_inter = get_v_inter(game, ray_angle, &vx, &vy);
+// 		if (v_inter < h_inter)
+// 		{
+// 			final = v_inter * cos(no_fishy);
+// 			// colour = 0x9c9358;
+// 			colour = 0x00b8bfc2;
+// 			colour *= v_inter / 100;
+// 			colour = change_shade(colour, final);
+// 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), vx, vy, 0x2a9df5);
+// 		}
+// 		else
+// 		{
+// 			final = h_inter * cos(no_fishy);
+// 			// colour = 0x9c9358;
+// 			colour  = 0x002a9df5;
+// 			colour *= h_inter / 100;
+// 			colour = change_shade(colour, final);
+// 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), hx, hy, 0x2a9df5);
+// 		}
+// 		// float wall_h = (64 * 1080) / final;
+// 		float wall_h = (64 / final) * (960 / pierce);
+// 		if (wall_h > 1080)
+// 			wall_h = 1080;
+// 		draw_vertical_line(game, ray, wall_h, 1080, colour, final);
+// 		ray++;
+// 		ray_angle += offset;
+// 		if (ray_angle < 0)
+// 			ray_angle += (2 * PI);
+// 		else if (ray_angle > (2 * PI))
+// 			ray_angle -= (2 * PI);
+// 	}
+// }
+
+
 void raaaaays(t_game *game)
 {
 	float fov_rd;
@@ -261,8 +416,12 @@ void raaaaays(t_game *game)
 	offset = fov_rd / WINDOW_W;
 	float final;
 	float no_fishy;
-	int colour;
+	// int colour;
 	float pierce = tan(fov_rd / 2.00);
+	// int clrrr = 0x23fcde;
+	// printf("%x\n\n", clrrr);
+	t_data *current_texture; // Holds the texture for the current wall
+
 	while (ray < WINDOW_W)
 	{
 		no_fishy = game->map.angle - ray_angle;
@@ -272,29 +431,26 @@ void raaaaays(t_game *game)
 			no_fishy -= (2 * PI);
 		h_inter = get_h_inter(game, ray_angle, &hx, &hy);
 		v_inter = get_v_inter(game, ray_angle, &vx, &vy);
+		float intercept = 0;
 		if (v_inter < h_inter)
 		{
+			intercept = vx;
 			final = v_inter * cos(no_fishy);
-			colour = 0x9c9358;
-			// colour = 0x00b8bfc2;
-			// colour *= v_inter / 100;
-			colour = change_shade(colour, final);
-			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), vx, vy, 0x2a9df5);
+			current_texture = &game->textures.texture[W_N]; // Use east texture for vertical walls
 		}
 		else
 		{
+			intercept = hx;
 			final = h_inter * cos(no_fishy);
-			colour = 0x9c9358;
-			// colour  = 0x002a9df5;
-			// colour *= h_inter / 100;
-			colour = change_shade(colour, final);
-			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), hx, hy, 0x2a9df5);
+			current_texture = &game->textures.texture[N_N]; // Use north texture for horizontal walls
 		}
-		// float wall_h = (64 * 1080) / final;
+
+		// Calculate wall height
 		float wall_h = (64 / final) * (960 / pierce);
-		if (wall_h > 1080)
-			wall_h = 1080;
-		draw_vertical_line(game, ray, wall_h, 1080, colour, final);
+
+		// Draw the wall with texture
+		draw_vertical_line(game, ray, wall_h, 1080, final, current_texture, intercept);
+		
 		ray++;
 		ray_angle += offset;
 		if (ray_angle < 0)
