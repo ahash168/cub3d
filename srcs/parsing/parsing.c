@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:49:03 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/19 14:31:25 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/09/24 11:53:24 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,6 @@ void	create_textures(t_game *game, t_textures *textures)
 		xpm_image(game, (char *)textures->strings.ceiling, &textures->pointers.ceiling);
 	if (textures->strings.floor)
 		xpm_image(game, (char *)textures->strings.floor, &textures->pointers.floor);
-
-	xpm_image(game, (char *)textures->strings.north, &textures->texture[N_N].img);
-	textures->texture[N_N].addr = mlx_get_data_addr(textures->texture[N_N].img, &textures->texture[N_N].bpp, &textures->texture[N_N].line_length, &textures->texture[N_N].endian);
-	xpm_image(game, (char *)textures->strings.east, &textures->texture[E_N].img);
-	textures->texture[E_N].addr = mlx_get_data_addr(textures->texture[E_N].img, &textures->texture[E_N].bpp, &textures->texture[E_N].line_length, &textures->texture[E_N].endian);
-	xpm_image(game, (char *)textures->strings.west, &textures->texture[W_N].img);
-	textures->texture[W_N].addr = mlx_get_data_addr(textures->texture[W_N].img, &textures->texture[W_N].bpp, &textures->texture[W_N].line_length, &textures->texture[W_N].endian);
-	xpm_image(game, (char *)textures->strings.south, &textures->texture[S_N].img);
-	textures->texture[S_N].addr = mlx_get_data_addr(textures->texture[S_N].img, &textures->texture[S_N].bpp, &textures->texture[S_N].line_length, &textures->texture[S_N].endian);
-	if (textures->strings.ceiling)
-	{
-		xpm_image(game, (char *)textures->strings.ceiling, &textures->texture[C_N].img);
-		textures->texture[C_N].addr = mlx_get_data_addr(textures->texture[C_N].img, &textures->texture[C_N].bpp, &textures->texture[C_N].line_length, &textures->texture[C_N].endian);
-	}
-	if (textures->strings.floor)
-	{
-		xpm_image(game, (char *)textures->strings.floor, &textures->texture[F_N].img);
-		textures->texture[F_N].addr = mlx_get_data_addr(textures->texture[F_N].img, &textures->texture[F_N].bpp, &textures->texture[F_N].line_length, &textures->texture[F_N].endian);	
-	}
 }
 
 void	parsing(char *path, t_game *game)
