@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/22 19:50:30 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/23 17:45:27 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -434,7 +434,7 @@ void raaaaays(t_game *game)
 		float intercept = 0;
 		if (v_inter < h_inter)
 		{
-			intercept = vx;
+			intercept = vy;
 			final = v_inter * cos(no_fishy);
 			current_texture = &game->textures.texture[W_N]; // Use east texture for vertical walls
 		}
