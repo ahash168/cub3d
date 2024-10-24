@@ -6,38 +6,39 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:10:11 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/23 17:47:29 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/24 20:24:30 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
+#define _C3D_SPEED 0.07f
 int	move_player(t_game *game)
 {
 	float	x;
 	float	y;
-	
+	// const float cached_cos = cosf(game->map.angle - M_PI_2/*(PI / 2)*/);
+
 	x = game->map.player_x;
 	y = game->map.player_y;
 	if (game->keys.w)
 	{
-		x += 0.03 * cos(game->map.angle);
-		y += 0.03 * sin(game->map.angle);
+		x += _C3D_SPEED * cosf(game->map.angle);
+		y += _C3D_SPEED * sinf(game->map.angle);
 	}
 	if (game->keys.a)
 	{
-		x += 0.03 * cos(game->map.angle - (PI / 2));
-		y += 0.03 * sin(game->map.angle - (PI / 2));
+		x += _C3D_SPEED * cosf(game->map.angle - M_PI_2/*(PI / 2)*/);
+		y += _C3D_SPEED * sinf(game->map.angle - M_PI_2/*(PI / 2)*/);
 	}
 	if (game->keys.s)
 	{
-		x += -0.03 * cos(game->map.angle);
-		y += -0.03 * sin(game->map.angle);
+		x += -_C3D_SPEED * cosf(game->map.angle);
+		y += -_C3D_SPEED * sinf(game->map.angle);
 	}
 	if (game->keys.d)
 	{
-		x += 0.03 * cos(game->map.angle + (PI / 2));
-		y += 0.03 * sin(game->map.angle + (PI / 2));
+		x += _C3D_SPEED * cosf(game->map.angle + M_PI_2/*(PI / 2)*/);
+		y += _C3D_SPEED * sinf(game->map.angle + M_PI_2/*(PI / 2)*/);
 	}
 	if (game->map.map[(int) game->map.player_y][(int) x] == '0')
 		game->map.player_x = x;

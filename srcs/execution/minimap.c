@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/14 13:18:01 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/24 19:30:08 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	draw_map(t_game *game)
 		}
 	}	
 }
-
+//
 void	rendermap(t_game *game)
 {
 	game->img.img = mlx_new_image(game->mlx, 1920, 1080);
