@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raaaaays.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/15 11:56:39 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:12:52 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ int find_wall(float x, float y, t_game *game)
 	if (map_y >= game->map.height || map_x >= game->map.width)
 		return (0);
 	if (game->map.map[map_y] && map_x <= (int)ft_strlen(game->map.map[map_y]))
-		if (game->map.map[map_y][map_x] == '1')
+		if (game->map.map[map_y][map_x] == '1' || game->map.map[map_y][map_x] == 'D')
 			return (0);
 	return (1);
 }
