@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mooooove.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:10:11 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/12 11:33:30 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:55:36 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ int	move_player(t_game *game)
 		x += 0.03 * cos(game->map.angle + (PI / 2));
 		y += 0.03 * sin(game->map.angle + (PI / 2));
 	}
-	if (game->map.map[(int) game->map.player_y][(int) x] == '0')
+	if (game->map.map[(int) game->map.player_y][(int) x] == '0'
+		|| game->map.map[(int) game->map.player_y][(int) x] == 'O')
 		game->map.player_x = x;
-	if (game->map.map[(int) y][(int) game->map.player_x] == '0')
+	if (game->map.map[(int) y][(int) game->map.player_x] == '0'
+		|| game->map.map[(int) y][(int) game->map.player_x] == 'O')
 		game->map.player_y = y;
 	return (0);
 }
