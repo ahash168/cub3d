@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
 /*   Updated: 2024/10/20 16:38:01 by tabadawi         ###   ########.fr       */
@@ -19,6 +19,7 @@ void ft_swap(int *a, int *b)
     *a = *b;
     *b = temp;
 }
+
 int interpolate(int y, int y1, int y2, int x1, int x2)
 {
     if (y2 == y1)
@@ -176,10 +177,35 @@ void    draw_minimap(t_game *game)
 	}
 	draw_border(game);
 	draw_filled_arrow(game, 200, 200, game->map.angle, 20, 0xFFFFFF);
+
+	}
+}
+
+void	door_str(t_game *game)
+{
+	int	x;
+	int	y;
+	float	angle;
+
+	x = (int)game->map.player_x;
+	y = (int)game->map.player_y;
+	angle = game->map.angle;
+	// printf("%d, %d, %f\n", x, y, angle);
+	if (((angle <= 135 * DR && angle > 45 * DR) && game->map.map[y + 1][x] == 'D')
+		|| ((angle <= 255 * DR && angle > 135 * DR) && game->map.map[y][x - 1] == 'D')
+		|| ((angle <= 255 * DR && angle > 315 * DR) && game->map.map[y - 1][x] == 'D')
+		|| (((angle <= 315 * DR && angle > 360 * DR) || (angle <= 45 * DR && angle > 0 * DR)) && game->map.map[y][x + 1] == 'D'))
+		mlx_string_put(game->mlx, game->window, 960, 540, 0xFFFFFF, "OPEN DOORRRR");
+	else if (((angle <= 135 * DR && angle > 45 * DR) && game->map.map[y + 1][x] == 'O')
+		|| ((angle <= 255 * DR && angle > 135 * DR) && game->map.map[y][x - 1] == 'O')
+		|| ((angle <= 255 * DR && angle > 315 * DR) && game->map.map[y - 1][x] == 'O')
+		|| (((angle <= 315 * DR && angle > 360 * DR) || (angle <= 45 * DR && angle > 0 * DR)) && game->map.map[y][x + 1] == 'O'))
+		mlx_string_put(game->mlx, game->window, 960, 540, 0xFFFFFF, "CLOSE DOORRRR");
 }
 
 void	rendermap(t_game *game)
 {
+	game->counter = (game->counter + 1) % (4 * 10);
 	game->img.img = mlx_new_image(game->mlx, 1920, 1080);
 	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bpp, &game->img.line_length, &game->img.endian);
 	// draw_map(game);
@@ -187,5 +213,9 @@ void	rendermap(t_game *game)
     raaaaays(game);
     draw_minimap(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->img.img, 0, 0);
+
+  mlx_put_image_to_window(game->mlx, game->window, game->textures.s.stick[game->counter / 10], 1100, 790);
+  
+	door_str(game);
 	mlx_destroy_image(game->mlx, game->img.img);
 }
