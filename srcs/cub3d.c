@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:21:58 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/24 20:25:40 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/18 19:20:51 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int main(int ac, char **av)
         errorer(NULL, 1, USAGE);
     parsing(av[1], &game);
     game.window = mlx_new_window(game.mlx, 1920, 1080, "cub3d");
-	// make_images(&game);
+	make_images(&game);
     mlx_hook(game.window, 6, 1L << 0, &mouse, &game);
 	mlx_hook(game.window, 2, 1L << 0, &keypress, &game);
     mlx_hook(game.window, 3, 1L << 1, &keyrelease, &game);

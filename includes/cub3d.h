@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/24 20:24:38 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:12:44 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
+	int			counter;
 	t_map		map;
 	t_textures	textures;
 	t_file		file;
@@ -202,6 +203,9 @@ void	rendermap(t_game *game);
 
 void	rays(t_game *game);
 void	raaaaays(t_game *game);
+
+void	make_images(t_game *game);
+int		animation(t_game *game);
 
 void	doors(t_game *game);
 
