@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/25 14:02:14 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/24 19:30:08 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	door_str(t_game *game)
 		|| (((angle <= 315 * DR && angle > 360 * DR) || (angle <= 45 * DR && angle > 0 * DR)) && game->map.map[y][x + 1] == 'O'))
 		mlx_string_put(game->mlx, game->window, 960, 540, 0xFFFFFF, "CLOSE DOORRRR");
 }
-
+//
 void	rendermap(t_game *game)
 {
 	game->img.img = mlx_new_image(game->mlx, 1920, 1080);

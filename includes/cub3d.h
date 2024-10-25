@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/25 12:41:37 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/24 20:24:38 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <math.h>
+# include <sys/time.h>
 
 /*****************************************************
 *					definitions						*
@@ -63,6 +64,17 @@
 # define XTRA_PLYR	"Broddie, you can only have one player.\n"
 # define NO_PLYR	"Soo.... u dont wanna play??????????????\n"
 # define VOID		"You cant go into the void bruv\n"
+# define IMG		"Image could not load.\n"
+
+enum e_type
+{
+	N_N,
+	E_N,
+	W_N,
+	S_N,
+	C_N,
+	F_N
+};
 
 /*****************************************************
 *						structs						*
@@ -123,14 +135,22 @@ typedef struct	s_txtr
 	void	*floor;
 }	t_txtr;
 
+typedef struct	s_sprite
+{
+	void	*glow;
+	void	*stick[5];
+}	t_sprite;
+
 typedef struct s_textures
 {
 	t_txtr	pointers;
+	t_data	texture[6];
 	t_txtr	strings;
 	int		floor;
 	int		ceiling;
 	int		f_arr[3];
 	int		c_arr[3];
+	t_sprite	s;
 }	t_textures;
 
 typedef struct s_game
@@ -175,6 +195,7 @@ int		handle_hooks(t_game *game);
 int		x_button(t_game *game);
 int		keypress(int keysym, t_game *game);
 int		keyrelease(int keysym, t_game *game);
+int		mouse(int x, int y, t_game *game);
 int		move_player(t_game *game);
 int		rotate_player(t_game *game);
 void	rendermap(t_game *game);
@@ -195,5 +216,8 @@ void	init_game(t_game *game);
 void	init_map(t_map *map);
 void	init_textures(t_textures *textures);
 void	pixel_put(t_data *data, int x, int y, int color);
+
+void	make_images(t_game *game);
+void	destroy_images(t_game *game);
 
 #endif
