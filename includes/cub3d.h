@@ -45,7 +45,8 @@
 # define A			0
 # define S			1
 # define D			2
-# define PI			3.14159265359f
+# define E			14
+# define PI			3.14159265359
 # define MALLOC		"ur such a failure, computer! ;p L\n"
 # define USAGE		"Usage: ./cub3d [map_path].cub\n"
 # define FILE_404	"File not found.\n"
@@ -105,6 +106,13 @@ typedef struct s_file
 	int		file_size;
 }	t_file;
 
+typedef struct s_door
+{
+	int	open;
+	int	x;
+	int	y;
+} t_door;
+
 typedef struct s_map
 {
 	char	**map;
@@ -114,6 +122,7 @@ typedef struct s_map
 	float	player_y;
 	float	angle;
 	char	player;
+	t_door	**doors;
 }	t_map;
 
 typedef struct	s_txtr
@@ -193,6 +202,8 @@ void	rendermap(t_game *game);
 
 void	rays(t_game *game);
 void	raaaaays(t_game *game);
+
+void	doors(t_game *game);
 
 int		close_game(t_game *game, int flag);
 
