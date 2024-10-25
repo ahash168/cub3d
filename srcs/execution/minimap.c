@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
 /*   Updated: 2024/10/20 17:29:22 by tabadawi         ###   ########.fr       */
@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#define DR	0.0174533
 
 void draw_circle(t_game *game, int x_center, int y_center, int color)
 {
@@ -125,17 +126,29 @@ void	draw_map(t_game *game)
 			else
 				draw_floor(game, j * 64, i * 64, 0xf7adbc);
 		}
-	}	
+	}
 }
 
-double	time_difference(struct timespec *start, struct timespec *end)
+void	door_str(t_game *game)
 {
-    double start_sec;
-    double end_sec;
-	
-	start_sec = start->tv_sec + start->tv_nsec / 1.0e9;
-	end_sec = end->tv_sec + end->tv_nsec / 1.0e9;
-    return (end_sec - start_sec);
+	int	x;
+	int	y;
+	float	angle;
+
+	x = (int)game->map.player_x;
+	y = (int)game->map.player_y;
+	angle = game->map.angle;
+	// printf("%d, %d, %f\n", x, y, angle);
+	if (((angle <= 135 * DR && angle > 45 * DR) && game->map.map[y + 1][x] == 'D')
+		|| ((angle <= 255 * DR && angle > 135 * DR) && game->map.map[y][x - 1] == 'D')
+		|| ((angle <= 255 * DR && angle > 315 * DR) && game->map.map[y - 1][x] == 'D')
+		|| (((angle <= 315 * DR && angle > 360 * DR) || (angle <= 45 * DR && angle > 0 * DR)) && game->map.map[y][x + 1] == 'D'))
+		mlx_string_put(game->mlx, game->window, 960, 540, 0xFFFFFF, "OPEN DOORRRR");
+	else if (((angle <= 135 * DR && angle > 45 * DR) && game->map.map[y + 1][x] == 'O')
+		|| ((angle <= 255 * DR && angle > 135 * DR) && game->map.map[y][x - 1] == 'O')
+		|| ((angle <= 255 * DR && angle > 315 * DR) && game->map.map[y - 1][x] == 'O')
+		|| (((angle <= 315 * DR && angle > 360 * DR) || (angle <= 45 * DR && angle > 0 * DR)) && game->map.map[y][x + 1] == 'O'))
+		mlx_string_put(game->mlx, game->window, 960, 540, 0xFFFFFF, "CLOSE DOORRRR");
 }
 
 void	rendermap(t_game *game)
@@ -147,13 +160,9 @@ void	rendermap(t_game *game)
 	// draw_player(game, game->map.player_x * 64, game->map.player_y * 64, 0x2a9df5);
     raaaaays(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->img.img, 0, 0);
-	mlx_put_image_to_window(game->mlx, game->window, game->textures.s.stick[game->counter / 10], 1100, 790);
-	// clock_gettime(CLOCK_MONOTONIC, &(game->counter.now));
-	// game->counter.c = time_difference(&(game->counter.previous), &(game->counter.now));
-	// if (game->counter.c >= 0.3)
-	// {
-	// 	animation(game);
-	// 	game->counter.previous = game->counter.now;
-	// }
+
+  mlx_put_image_to_window(game->mlx, game->window, game->textures.s.stick[game->counter / 10], 1100, 790);
+  
+	door_str(game);
 	mlx_destroy_image(game->mlx, game->img.img);
 }

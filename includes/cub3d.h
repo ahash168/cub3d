@@ -23,7 +23,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <math.h>
-# include <time.h>
+# include <sys/time.h>
 
 /*****************************************************
 *					definitions						*
@@ -45,6 +45,7 @@
 # define A			0
 # define S			1
 # define D			2
+# define E			14
 # define PI			3.14159265359
 # define MALLOC		"ur such a failure, computer! ;p L\n"
 # define USAGE		"Usage: ./cub3d [map_path].cub\n"
@@ -64,6 +65,16 @@
 # define NO_PLYR	"Soo.... u dont wanna play??????????????\n"
 # define VOID		"You cant go into the void bruv\n"
 # define IMG		"Image could not load.\n"
+
+enum e_type
+{
+	N_N,
+	E_N,
+	W_N,
+	S_N,
+	C_N,
+	F_N
+};
 
 /*****************************************************
 *						structs						*
@@ -95,6 +106,13 @@ typedef struct s_file
 	int		file_size;
 }	t_file;
 
+typedef struct s_door
+{
+	int	open;
+	int	x;
+	int	y;
+} t_door;
+
 typedef struct s_map
 {
 	char	**map;
@@ -104,6 +122,7 @@ typedef struct s_map
 	float	player_y;
 	float	angle;
 	char	player;
+	t_door	**doors;
 }	t_map;
 
 typedef struct	s_txtr
@@ -124,12 +143,13 @@ typedef struct	s_sprite
 
 typedef struct s_textures
 {
-	t_txtr		pointers;
-	t_txtr		strings;
-	int			floor;
-	int			ceiling;
-	int			f_arr[3];
-	int			c_arr[3];
+	t_txtr	pointers;
+	t_data	texture[6];
+	t_txtr	strings;
+	int		floor;
+	int		ceiling;
+	int		f_arr[3];
+	int		c_arr[3];
 	t_sprite	s;
 }	t_textures;
 
@@ -176,6 +196,7 @@ int		handle_hooks(t_game *game);
 int		x_button(t_game *game);
 int		keypress(int keysym, t_game *game);
 int		keyrelease(int keysym, t_game *game);
+int		mouse(int x, int y, t_game *game);
 int		move_player(t_game *game);
 int		rotate_player(t_game *game);
 void	rendermap(t_game *game);
@@ -185,6 +206,8 @@ void	raaaaays(t_game *game);
 
 void	make_images(t_game *game);
 int		animation(t_game *game);
+
+void	doors(t_game *game);
 
 int		close_game(t_game *game, int flag);
 
@@ -197,5 +220,8 @@ void	init_game(t_game *game);
 void	init_map(t_map *map);
 void	init_textures(t_textures *textures);
 void	pixel_put(t_data *data, int x, int y, int color);
+
+void	make_images(t_game *game);
+void	destroy_images(t_game *game);
 
 #endif

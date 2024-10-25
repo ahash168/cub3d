@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
 #    Updated: 2024/10/20 17:26:35 by tabadawi         ###   ########.fr        #
@@ -16,7 +16,7 @@ SRCCP	=	parsing.c parse_file.c parse_textures.c assign_texture.c assign_colour.c
 			set_colour.c parse_map.c validate_map.c parsing_utils.c
 
 SRCCE	=	hooks.c minimap.c mooooove.c roooootate.c drawing.c loops.c handle_hooks.c \
-			rays.c raaaaays.c animation.c make_images.c
+			rays.c raaaaays.c animation.c make_images.c doors.c
 
 SRCCU	=	error.c close_game.c init_game.c
 
@@ -27,7 +27,7 @@ SRC 	= 	srcs/cub3d.c \
 
 OBJ		=	$(SRC:.c=.o)
 
-CFLAGS	=	-Wall -Wextra -Werror -g3 
+CFLAGS	=	-Wall -Wextra -Werror -g3
 
 # CFLAGS	+=	-fsanitize=address
 

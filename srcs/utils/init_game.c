@@ -27,6 +27,12 @@ void	init_textures(t_textures *textures)
 	textures->pointers.south = NULL;
 	textures->pointers.ceiling = NULL;
 	textures->pointers.floor = NULL;
+	textures->texture[N_N].img = NULL;
+	textures->texture[E_N].img = NULL;
+	textures->texture[W_N].img = NULL;
+	textures->texture[S_N].img = NULL;
+	textures->texture[C_N].img = NULL;
+	textures->texture[F_N].img = NULL;
 	textures->strings.north = NULL;
 	textures->strings.east = NULL;
 	textures->strings.west = NULL;
@@ -41,6 +47,13 @@ void	init_textures(t_textures *textures)
 	textures->s.stick[2] = NULL;
 	textures->s.stick[3] = NULL;
 	textures->s.stick[4] = NULL;
+}
+
+void	init_file(t_file *file)
+{
+	file->file = NULL;
+	file->fd = -1;
+	file->file_size = 1;
 }
 
 void	init_map(t_map *map)

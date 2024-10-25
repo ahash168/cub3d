@@ -21,8 +21,8 @@ int main(int ac, char **av)
     parsing(av[1], &game);
     game.window = mlx_new_window(game.mlx, 1920, 1080, "cub3d");
 	make_images(&game);
-	rendermap(&game);
-    mlx_hook(game.window, 2, 1L << 0, &keypress, &game);
+    mlx_hook(game.window, 6, 1L << 0, &mouse, &game);
+	mlx_hook(game.window, 2, 1L << 0, &keypress, &game);
     mlx_hook(game.window, 3, 1L << 1, &keyrelease, &game);
 	mlx_hook(game.window, 17, 1L << 2, &x_button, &game);
 	mlx_loop_hook(game.mlx, loops, &game);
