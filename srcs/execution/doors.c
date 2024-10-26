@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doors.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:27:38 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/25 19:23:17 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/26 20:49:18 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 int	check_door(t_game *game, float a, int open, int which)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
 	float	angle;
 	char	c;
-	int		increment;
+	int		inc;
 
 	x = (int)game->map.player_x;
 	y = (int)game->map.player_y;
@@ -32,20 +32,20 @@ int	check_door(t_game *game, float a, int open, int which)
 	else if (which == 4)
 		x += 1;
 	angle = game->map.angle;
-	increment = 1 + ((a == 315) || (a == 0));
+	inc = 1 + ((a == 315) || (a == 0));
 	if (open == 1)
 		c = 'O';
 	else
 		c = 'D';
-	if ((angle <= (a + PI / increment) && angle > a) && game->map.map[y][x] == c)
+	if ((angle <= (a + PI / inc) && angle > a) && game->map.map[y][x] == c)
 		return (1);
 	return (0);
 }
 
 void	doors(t_game *game)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
 	float	angle;
 
 	x = (int)game->map.player_x;

@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/20 17:12:44 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/26 21:00:49 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ enum e_type
 
 typedef struct s_keys
 {
-	int w;
-	int a;
-	int s;
-	int d;
-	int left;
-	int right;
-} t_keys;
+	int	w;
+	int	a;
+	int	s;
+	int	d;
+	int	left;
+	int	right;
+}	t_keys;
 
 typedef struct s_data
 {
@@ -111,7 +111,7 @@ typedef struct s_door
 	int	open;
 	int	x;
 	int	y;
-} t_door;
+}	t_door;
 
 typedef struct s_map
 {
@@ -125,7 +125,7 @@ typedef struct s_map
 	t_door	**doors;
 }	t_map;
 
-typedef struct	s_txtr
+typedef struct s_txtr
 {
 	void	*north;
 	void	*east;
@@ -135,7 +135,7 @@ typedef struct	s_txtr
 	void	*floor;
 }	t_txtr;
 
-typedef struct	s_sprite
+typedef struct s_sprite
 {
 	void	*glow;
 	void	*stick[5];
@@ -143,13 +143,13 @@ typedef struct	s_sprite
 
 typedef struct s_textures
 {
-	t_txtr	pointers;
-	t_data	texture[6];
-	t_txtr	strings;
-	int		floor;
-	int		ceiling;
-	int		f_arr[3];
-	int		c_arr[3];
+	t_txtr		pointers;
+	t_data		texture[6];
+	t_txtr		strings;
+	int			floor;
+	int			ceiling;
+	int			f_arr[3];
+	int			c_arr[3];
 	t_sprite	s;
 }	t_textures;
 

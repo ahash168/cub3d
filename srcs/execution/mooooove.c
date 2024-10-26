@@ -3,48 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   mooooove.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:10:11 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/24 20:24:30 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/26 22:08:13 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 #define _C3D_SPEED 0.07f
-int	move_player(t_game *game)
-{
-	float	x;
-	float	y;
-	// const float cached_cos = cosf(game->map.angle - M_PI_2/*(PI / 2)*/);
 
-	x = game->map.player_x;
-	y = game->map.player_y;
-	if (game->keys.w)
-	{
-		x += _C3D_SPEED * cosf(game->map.angle);
-		y += _C3D_SPEED * sinf(game->map.angle);
-	}
-	if (game->keys.a)
-	{
-		x += _C3D_SPEED * cosf(game->map.angle - M_PI_2/*(PI / 2)*/);
-		y += _C3D_SPEED * sinf(game->map.angle - M_PI_2/*(PI / 2)*/);
-	}
-	if (game->keys.s)
-	{
-		x += -_C3D_SPEED * cosf(game->map.angle);
-		y += -_C3D_SPEED * sinf(game->map.angle);
-	}
-	if (game->keys.d)
-	{
-		x += _C3D_SPEED * cosf(game->map.angle + M_PI_2/*(PI / 2)*/);
-		y += _C3D_SPEED * sinf(game->map.angle + M_PI_2/*(PI / 2)*/);
-	}
+void	new_pos(t_game *game, float x, float y)
+{
 	if (game->map.map[(int) game->map.player_y][(int) x] == '0'
 		|| game->map.map[(int) game->map.player_y][(int) x] == 'O')
 		game->map.player_x = x;
 	if (game->map.map[(int) y][(int) game->map.player_x] == '0'
 		|| game->map.map[(int) y][(int) game->map.player_x] == 'O')
 		game->map.player_y = y;
+}
+
+void	update_values(t_game *game, float *x, float *y, float angle)
+{
+	float	speed;
+
+	speed = _C3D_SPEED;
+	if (game->keys.s)
+		speed *= -1.f;
+	(*x) += speed * cosf(game->map.angle + angle);
+	(*y) += speed * sinf(game->map.angle + angle);
+}
+
+int	move_player(t_game *game)
+{
+	float	x;
+	float	y;
+
+	x = game->map.player_x;
+	y = game->map.player_y;
+	if (game->keys.w)
+		update_values(game, &x, &y, 0.f);
+	if (game->keys.a)
+		update_values(game, &x, &y, -1.f * M_PI_2);
+	if (game->keys.s)
+		update_values(game, &x, &y, 0.f);
+	if (game->keys.d)
+		update_values(game, &x, &y, M_PI_2);
+	new_pos(game, x, y);
 	return (0);
 }

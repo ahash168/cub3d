@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_images.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:16:39 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/17 14:54:28 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/26 21:02:17 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	check_images(t_game *game)
 void	make_images(t_game *game)
 {
 	int	tile;
-	
+
 	tile = 64;
 	game->textures.s.stick[0] = mlx_xpm_file_to_image(game->mlx,
 			"textures/xpm/green.xpm", &tile, &tile);

@@ -6,18 +6,11 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:36:50 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/20 17:13:00 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/26 19:41:42 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-void	init_file(t_file *file)
-{
-	file->file = NULL;
-	file->fd = -1;
-	file->file_size = 1;
-}
 
 void	init_textures(t_textures *textures)
 {

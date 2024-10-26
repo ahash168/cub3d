@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/20 16:38:01 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/26 19:41:28 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#define DR	0.0174533f
+
 void ft_swap(int *a, int *b)
 {
     int	temp;
@@ -177,8 +179,6 @@ void    draw_minimap(t_game *game)
 	}
 	draw_border(game);
 	draw_filled_arrow(game, 200, 200, game->map.angle, 20, 0xFFFFFF);
-
-	}
 }
 
 void	door_str(t_game *game)

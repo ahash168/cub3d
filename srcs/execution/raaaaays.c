@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raaaaays.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/20 17:28:11 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/26 19:55:10 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@
 int	change_shade(int colour, float dist, float avg)
 {
 	float shade_factor = (dist <= MINIMUM) * 1.f + (dist >= MAXIMUM) * 0.f;
-	// if (dist >= MAXIMUM)
-	// 	shade_factor = 0.0;
-	// if (dist <= MINIMUM)
-	// 	shade_factor = 1.0;
 	if (dist > MINIMUM && dist < MAXIMUM)
 	{
 		shade_factor = avg; // cacheable
@@ -39,11 +35,6 @@ int	change_shade(int colour, float dist, float avg)
 	unsigned char r = ((trgb >> 16) & 0xFF) * shade_factor;
 	unsigned char g = ((trgb >> 8) & 0xFF) * shade_factor;
 	unsigned char b = (trgb & 0xFF) * shade_factor;
-
-	// r = (unsigned char)(r * shade_factor);
-	// g = (unsigned char)(g * shade_factor);
-	// b = (unsigned char)(b * shade_factor);
-
 	unsigned int shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
 	return (shaded_color);
 }
@@ -79,34 +70,6 @@ int	shade_floor(int colour, int y, int window_height, int final)
 	unsigned int shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
 	return (shaded_color);
 }
-
-// void	draw_vertical_line(t_game *game, int x, float h, int window_height, int color, float finale)
-// {
-// 	int	y;
-// 	(void)finale;
-// 	int i = 0;
-// 	int final;
-// 	y = (window_height - h) / 2;
-// 	while (i < y)
-// 	{
-// 		pixel_put(&game->img, x, i, game->textures.ceiling);
-// 		i++;
-// 	}
-// 	while ((y < window_height - ((window_height - h ) / 2)) && y >= 0)
-// 	{
-// 		pixel_put(&game->img, x, y, color);
-// 		y++;
-// 	}
-// 	final = y;
-// 	while (y < window_height)
-// 	{
-
-// 		int clr = shade_floor(game->textures.floor, y, 1080, finale);
-// 		// int clr = 0x000000;
-// 		pixel_put(&game->img, x, y, clr);
-// 		y++;
-// 	}
-// }
 
 int get_pixel_color_from_texture(t_data *texture, int x, int y)
 {
@@ -179,7 +142,6 @@ void	draw_vertical_line(t_game *game, int x, float h, int window_height, float d
 		}
 	}
 }
-
 
 void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
 {
@@ -307,74 +269,6 @@ int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
 	// printf("last vy: %f\n", *vy);
 	return (sqrt(pow(*vx - (game->map.player_x * 64), 2) + pow(*vy - (game->map.player_y * 64), 2)));
 }
-
-// void raaaaays(t_game *game)
-// {
-// 	float fov_rd;
-// 	float h_inter;
-// 	float v_inter;
-// 	float ray;
-// 	float ray_angle;
-// 	float offset;
-// 	float hx;
-// 	float hy;
-// 	float vx;
-// 	float vy;
-// 	fov_rd = 60.00 * DR;
-// 	h_inter = 0.0;
-// 	v_inter = 0.0;
-// 	ray = 0;
-// 	ray_angle = game->map.angle - (fov_rd / 2.00);
-// 	if (ray_angle < 0)
-// 		ray_angle += (2 * PI);
-// 	else if (ray_angle > (2 * PI))
-// 		ray_angle -= (2 * PI);
-// 	offset = fov_rd / WINDOW_W;
-// 	float final;
-// 	float no_fishy;
-// 	int colour;
-// 	float pierce = tan(fov_rd / 2.00);
-// 	while (ray < WINDOW_W)
-// 	{
-// 		no_fishy = game->map.angle - ray_angle;
-// 		if (no_fishy < 0)
-// 			no_fishy += (2 * PI);
-// 		else if (no_fishy > (2 * PI))
-// 			no_fishy -= (2 * PI);
-// 		h_inter = get_h_inter(game, ray_angle, &hx, &hy);
-// 		v_inter = get_v_inter(game, ray_angle, &vx, &vy);
-// 		if (v_inter < h_inter)
-// 		{
-// 			final = v_inter * cos(no_fishy);
-// 			// colour = 0x9c9358;
-// 			colour = 0x00b8bfc2;
-// 			colour *= v_inter / 100;
-// 			colour = change_shade(colour, final);
-// 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), vx, vy, 0x2a9df5);
-// 		}
-// 		else
-// 		{
-// 			final = h_inter * cos(no_fishy);
-// 			// colour = 0x9c9358;
-// 			colour  = 0x002a9df5;
-// 			colour *= h_inter / 100;
-// 			colour = change_shade(colour, final);
-// 			// draw_line(game, (game->map.player_x * 64), (game->map.player_y * 64), hx, hy, 0x2a9df5);
-// 		}
-// 		// float wall_h = (64 * 1080) / final;
-// 		float wall_h = (64 / final) * (960 / pierce);
-// 		if (wall_h > 1080)
-// 			wall_h = 1080;
-// 		draw_vertical_line(game, ray, wall_h, 1080, colour, final);
-// 		ray++;
-// 		ray_angle += offset;
-// 		if (ray_angle < 0)
-// 			ray_angle += (2 * PI);
-// 		else if (ray_angle > (2 * PI))
-// 			ray_angle -= (2 * PI);
-// 	}
-// }
-
 
 void raaaaays(t_game *game)
 {
