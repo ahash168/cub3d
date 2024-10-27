@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/26 19:55:10 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/27 22:02:44 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,35 @@
 #define MINIMUM 50
 #define MAXIMUM 350
 
-
 int	change_shade(int colour, float dist, float avg)
 {
-	float shade_factor = (dist <= MINIMUM) * 1.f + (dist >= MAXIMUM) * 0.f;
+	float			shade_factor;
+
+	shade_factor = (dist <= MINIMUM) * 1.f + (dist >= MAXIMUM) * 0.f;
 	if (dist > MINIMUM && dist < MAXIMUM)
 	{
-		shade_factor = avg; // cacheable
-		if(shade_factor < 0.0f)
+		shade_factor = avg;
+		if (shade_factor < 0.0f)
 			shade_factor = 0.0f;
-		if(shade_factor > 1.0f)
+		if (shade_factor > 1.0f)
 			shade_factor = 1.0f;
 	}
-	unsigned int trgb = colour; // Replace this with your color
-	unsigned char r = ((trgb >> 16) & 0xFF) * shade_factor;
-	unsigned char g = ((trgb >> 8) & 0xFF) * shade_factor;
-	unsigned char b = (trgb & 0xFF) * shade_factor;
-	unsigned int shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
+	unsigned int	trgb = colour;
+	unsigned char	r = ((trgb >> 16) & 0xFF) * shade_factor;
+	unsigned char	g = ((trgb >> 8) & 0xFF) * shade_factor;
+	unsigned char	b = (trgb & 0xFF) * shade_factor;
+	unsigned int	shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
 	return (shaded_color);
 }
 
 int	shade_floor(int colour, int y, int window_height, int final)
 {
-	float shade_factor = 1.f;
-	const float minimum = 50.0;
-	const float maximum = 350.0;
+	float			shade_factor = 1.f;
+	const float		minimum = 50.0;
+	const float		maximum = 350.0;
+	int				cached_check = window_height - y;
 
 	(void)final;
-	int cached_check = window_height - y;
 	if (cached_check <= minimum)
 		shade_factor = 1.f;
 	else if (cached_check >= maximum)
@@ -55,53 +56,48 @@ int	shade_floor(int colour, int y, int window_height, int final)
 	{
 		shade_factor = 1.f - (((cached_check) - minimum) / (maximum - minimum));
 		if (shade_factor < 0.f)
-    	    shade_factor = 0.f;
-    	if (shade_factor > 1.f)
-    	    shade_factor = 1.f;
+			shade_factor = 0.f;
+		if (shade_factor > 1.f)
+			shade_factor = 1.f;
 	}
-
-	unsigned int trgb = colour;
-	unsigned char r = (trgb >> 16) & 0xFF;
-	unsigned char g = (trgb >> 8) & 0xFF;
-	unsigned char b = trgb & 0xFF;
+	unsigned int	trgb = colour;
+	unsigned char	r = (trgb >> 16) & 0xFF;
+	unsigned char	g = (trgb >> 8) & 0xFF;
+	unsigned char	b = trgb & 0xFF;
 	r = (unsigned char)(r * shade_factor);
 	g = (unsigned char)(g * shade_factor);
 	b = (unsigned char)(b * shade_factor);
-	unsigned int shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
+	unsigned int	shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
 	return (shaded_color);
 }
 
-int get_pixel_color_from_texture(t_data *texture, int x, int y)
+int	get_pixel_color_from_texture(t_data *texture, int x, int y)
 {
-    char *pixel;
-    int color;
+	char	*pixel;
+	int		color;
 
-    pixel = texture->addr + (y * texture->line_length + x * (texture->bpp / 8));
-    color = *(unsigned int *)pixel;
-    return (color);
+	pixel = texture->addr + (y * texture->line_length + x * (texture->bpp / 8));
+	color = *(unsigned int *)pixel;
+	return (color);
 }
 
 void	draw_vertical_line(t_game *game, int x, float h, int window_height, float distance, t_data *texture, float huh)
 {
-	int	y = 0;
-	int i = 0;
-	int tex_x, tex_y;
-	int tex_height = 256; // Assuming all walls have the same height
-	int tex_width = 256;   // Assuming all walls have the same width
-	int final;
-	float dist_max_min_avg = 1.f - ((distance - MINIMUM) / (MAXIMUM - MINIMUM));
+	int		y = 0;
+	int		i = 0;
+	int		tex_x, tex_y;
+	int		tex_height = 256;
+	int		tex_width = 256;
+	int		final;
+	float	dist_max_min_avg = 1.f - ((distance - MINIMUM) / (MAXIMUM - MINIMUM));
 
-	// tex_x = (int)huh * (tex_width / 64);
-	// tex_x = (int)((int)(huh * 4) % tex_width);  // Calculate the X coordinate in the texture
 	tex_x = (int)(huh * (tex_width / 64));
-	if (tex_x >= tex_width)  // Wrap the value within the texture width
-    	tex_x = tex_x - (tex_x / tex_width) * tex_width;
-
-
+	if (tex_x >= tex_width)
+		tex_x = tex_x - (tex_x / tex_width) * tex_width;
 	if (h < window_height)
 	{
-		float half_height = (window_height - h) / 2.f; //
-		float factor2 = tex_height / h;
+		float	half_height = (window_height - h) / 2.f;
+		float	factor2 = tex_height / h;
 		y = (window_height - h) / 2;
 		while (i < y)
 		{
@@ -121,7 +117,6 @@ void	draw_vertical_line(t_game *game, int x, float h, int window_height, float d
 		{
 			int clr = shade_floor(game->textures.floor, y, window_height, distance); //
 			pixel_put(&game->img, x, y, clr);
-			// pixel_put(&game->img, x, y, game->textures.floor);
 			y++;
 		}
 	}
@@ -171,7 +166,7 @@ void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
 	}
 }
 
-int unit_circle(float angle, char c) // check the unit circle
+int unit_circle(float angle, char c)
 {
 	if (c == 'x')
 	{
@@ -186,7 +181,7 @@ int unit_circle(float angle, char c) // check the unit circle
 	return (0);
 }
 
-int inter_check(float angle, float *inter, float *step, int is_horizon) // check the intersection
+int inter_check(float angle, float *inter, float *step, int is_horizon)
 {
 	if (is_horizon)
 	{
@@ -209,7 +204,7 @@ int inter_check(float angle, float *inter, float *step, int is_horizon) // check
 	return (1);
 }
 
-int find_wall(float x, float y, t_game *game)
+int	find_wall(float x, float y, t_game *game)
 {
 	int map_x;
 	int map_y;
@@ -228,9 +223,9 @@ int find_wall(float x, float y, t_game *game)
 
 int	get_h_inter(t_game *game, float ray_angle, float *hx, float *hy)
 {
-	float x_step;
-	float y_step;
-	int pixel;
+	float	x_step;
+	float	y_step;
+	int		pixel;
 
 	y_step = 64;
 	x_step = 64 / tan(ray_angle);
@@ -249,16 +244,15 @@ int	get_h_inter(t_game *game, float ray_angle, float *hx, float *hy)
 
 int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
 {
-	float x_step;
-	float y_step;
-	int pixel;
+	float	x_step;
+	float	y_step;
+	int		pixel;
 
 	x_step = 64;
 	y_step = 64 * tan(ray_angle);
 	*vx = floor((game->map.player_x * 64) / 64) * 64;
 	pixel = inter_check(ray_angle, vx, &x_step, 0);
 	*vy = (game->map.player_y * 64) + (*vx - (game->map.player_x * 64)) * tan(ray_angle);
-	// printf("first vy: %f\n", tan(ray_angle));
 	if ((unit_circle(ray_angle, 'x') && y_step < 0) || (!unit_circle(ray_angle, 'x') && y_step > 0))
 		y_step *= -1;
 	while (find_wall(*vx - pixel, *vy, game))
@@ -266,23 +260,27 @@ int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
 		*vx += x_step;
 		*vy += y_step;
 	}
-	// printf("last vy: %f\n", *vy);
 	return (sqrt(pow(*vx - (game->map.player_x * 64), 2) + pow(*vy - (game->map.player_y * 64), 2)));
 }
 
-void raaaaays(t_game *game)
+void	raaaaays(t_game *game)
 {
-	float fov_rd;
-	float h_inter;
-	float v_inter;
-	float ray;
-	float ray_angle;
-	float offset;
-	float hx;
-	float hy;
-	float vx;
-	float vy;
+	float	fov_rd;
+	float	h_inter;
+	float	v_inter;
+	float	ray;
+	float	ray_angle;
+	float	offset;
+	float	hx;
+	float	hy;
+	float	vx;
+	float	vy;
+	float	final;
+	float	no_fishy;
 	fov_rd = 60.0f * DR;
+	float	pierce = tanf(fov_rd / 2.f);
+	t_data	*current_texture;
+
 	h_inter = 0.0f;
 	v_inter = 0.0f;
 	ray = 0;
@@ -292,14 +290,6 @@ void raaaaays(t_game *game)
 	else if (ray_angle > (2 * PI))
 		ray_angle -= (2 * PI);
 	offset = fov_rd / WINDOW_W;
-	float final;
-	float no_fishy;
-	// int colour;
-	float pierce = tanf(fov_rd / 2.f);
-	// int clrrr = 0x23fcde;
-	// printf("%x\n\n", clrrr);
-	t_data *current_texture; // Holds the texture for the current wall
-	
 	while (ray < WINDOW_W)
 	{
 		no_fishy = game->map.angle - ray_angle;
@@ -309,20 +299,20 @@ void raaaaays(t_game *game)
 			no_fishy -= (2 * PI);
 		h_inter = get_h_inter(game, ray_angle, &hx, &hy);
 		v_inter = get_v_inter(game, ray_angle, &vx, &vy);
-		float intercept = 0;
+		float	intercept = 0;
 		if (v_inter < h_inter)
 		{
 			intercept = vy;
 			final = v_inter * cosf(no_fishy);
-			current_texture = &game->textures.texture[W_N]; // Use east texture for vertical walls
+			current_texture = &game->textures.texture[W_N];
 		}
 		else
 		{
 			intercept = hx;
 			final = h_inter * cosf(no_fishy);
-			current_texture = &game->textures.texture[N_N]; // Use north texture for horizontal walls
+			current_texture = &game->textures.texture[N_N];
 		}
-		float wall_h = (64 / final) * (960 / pierce);
+		float	wall_h = (64 / final) * (960 / pierce);
 		draw_vertical_line(game, ray, wall_h, 1080, final, current_texture, intercept);
 		ray++;
 		ray_angle += offset;
