@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/27 22:02:44 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:08:56 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,24 @@
 #define P3	3.f * PI/2
 #define WINDOW_W 1920
 #define WINDOW_H 1080
-#define MINIMUM 50
-#define MAXIMUM 350
+#define MINIMUM 50.f
+#define MAXIMUM 350.f
+#define MINIMUMF 50.f
+#define MAXIMUMF 350.f
+
+typedef struct s_trgb
+{
+	unsigned int	trgb;
+	unsigned int	shaded;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+}	t_trgb;
 
 int	change_shade(int colour, float dist, float avg)
 {
 	float			shade_factor;
+	t_trgb			new;
 
 	shade_factor = (dist <= MINIMUM) * 1.f + (dist >= MAXIMUM) * 0.f;
 	if (dist > MINIMUM && dist < MAXIMUM)
@@ -32,43 +44,39 @@ int	change_shade(int colour, float dist, float avg)
 		if (shade_factor > 1.0f)
 			shade_factor = 1.0f;
 	}
-	unsigned int	trgb = colour;
-	unsigned char	r = ((trgb >> 16) & 0xFF) * shade_factor;
-	unsigned char	g = ((trgb >> 8) & 0xFF) * shade_factor;
-	unsigned char	b = (trgb & 0xFF) * shade_factor;
-	unsigned int	shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
-	return (shaded_color);
+	new.trgb = colour;
+	new.r = ((new.trgb >> 16) & 0xFF) * shade_factor;
+	new.g = ((new.trgb >> 8) & 0xFF) * shade_factor;
+	new.b = (new.trgb & 0xFF) * shade_factor;
+	new.shaded = (new.trgb & 0xFF000000) | (new.r << 16) | (new.g << 8) | new.b;
+	return (new.shaded);
 }
 
-int	shade_floor(int colour, int y, int window_height, int final)
+int	shade_floor(int colour, int y, int window_height)
 {
-	float			shade_factor = 1.f;
-	const float		minimum = 50.0;
-	const float		maximum = 350.0;
-	int				cached_check = window_height - y;
+	float	shade_factor;
+	t_trgb	new;
+	int		check;
 
-	(void)final;
-	if (cached_check <= minimum)
+	check = window_height - y;
+	if (check <= MINIMUMF)
 		shade_factor = 1.f;
-	else if (cached_check >= maximum)
+	else if (check >= MAXIMUMF)
 		shade_factor = 0.f;
 	else
 	{
-		shade_factor = 1.f - (((cached_check) - minimum) / (maximum - minimum));
+		shade_factor = 1.f - (((check) - MINIMUMF) / (MAXIMUMF - MINIMUMF));
 		if (shade_factor < 0.f)
 			shade_factor = 0.f;
 		if (shade_factor > 1.f)
 			shade_factor = 1.f;
 	}
-	unsigned int	trgb = colour;
-	unsigned char	r = (trgb >> 16) & 0xFF;
-	unsigned char	g = (trgb >> 8) & 0xFF;
-	unsigned char	b = trgb & 0xFF;
-	r = (unsigned char)(r * shade_factor);
-	g = (unsigned char)(g * shade_factor);
-	b = (unsigned char)(b * shade_factor);
-	unsigned int	shaded_color = (trgb & 0xFF000000) | (r << 16) | (g << 8) | b;
-	return (shaded_color);
+	new.trgb = colour;
+	new.r = ((new.trgb >> 16) & 0xFF) * shade_factor;
+	new.g = ((new.trgb >> 8) & 0xFF) * shade_factor;
+	new.b = (new.trgb & 0xFF) * shade_factor;
+	new.shaded = (new.trgb & 0xFF000000) | (new.r << 16) | (new.g << 8) | new.b;
+	return (new.shaded);
 }
 
 int	get_pixel_color_from_texture(t_data *texture, int x, int y)
@@ -108,14 +116,14 @@ void	draw_vertical_line(t_game *game, int x, float h, int window_height, float d
 		{
 			tex_y = (int)((y - half_height) * factor2);
 			int color = get_pixel_color_from_texture(texture, tex_x, tex_y);
-			color = change_shade(color, distance, dist_max_min_avg); //
+			color = change_shade(color, distance, dist_max_min_avg);
 			pixel_put(&game->img, x, y, color);
 			y++;
 		}
 		final = y;
 		while (y < window_height)
 		{
-			int clr = shade_floor(game->textures.floor, y, window_height, distance); //
+			int clr = shade_floor(game->textures.floor, y, window_height);
 			pixel_put(&game->img, x, y, clr);
 			y++;
 		}
@@ -130,38 +138,10 @@ void	draw_vertical_line(t_game *game, int x, float h, int window_height, float d
 		{
 			tex_y = (int)(start * factor);
 			int color = get_pixel_color_from_texture(texture, tex_x, tex_y);
-			color = change_shade(color, distance, dist_max_min_avg); //
+			color = change_shade(color, distance, dist_max_min_avg);
 			pixel_put(&game->img, x, y, color);
 			start++;
 			y++;
-		}
-	}
-}
-
-void	draw_line(t_game *game, int x0, int y0, int x1, int y1, int color)
-{
-	int dx = abs(x1 - x0);
-	int dy = abs(y1 - y0);
-	int sx = (x0 < x1) ? 1 : -1;
-	int sy = (y0 < y1) ? 1 : -1;
-	int err = dx - dy;
-	int e2;
-
-	while (1)
-	{
-		pixel_put(&game->img, x0, y0, color);
-		if (x0 == x1 && y0 == y1)
-			break;
-		e2 = 2 * err;
-		if (e2 > -dy)
-		{
-			err -= dy;
-			x0 += sx;
-		}
-		if (e2 < dx)
-		{
-			err += dx;
-			y0 += sy;
 		}
 	}
 }
