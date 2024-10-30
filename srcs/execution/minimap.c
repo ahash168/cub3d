@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/27 22:12:21 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:41:40 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,8 @@ void	rendermap(t_game *game)
 	game->img.img = mlx_new_image(game->mlx, 1920, 1080);
 	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bpp, \
 	&game->img.line_length, &game->img.endian);
-	raaaaays(game);
+	// raaaaays(game);
+	rays(game);
 	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx, game->window, \
 	game->img.img, 0, 0);
