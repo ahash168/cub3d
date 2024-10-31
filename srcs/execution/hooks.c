@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 21:46:57 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/26 21:50:02 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/30 13:56:16 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	mouse(int x, int y, t_game *game)
 	(void) y;
 	if (game->keys.right && game->keys.left)
 		return (0);
-	if (x < (1920 / 8))
+	if (x < (1920 / 5))
 		game->keys.left = 1;
-	else if (x > 7 * (1920 / 8))
+	else if (x > 4 * (1920 / 5))
 		game->keys.right = 1;
 	else
 	{

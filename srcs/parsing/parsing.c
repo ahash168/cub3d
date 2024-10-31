@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:49:03 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/19 14:31:25 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/10/30 15:32:21 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@ void	xpm_image(t_game *game, char *file, void **texture)
 
 void	create_textures(t_game *game, t_textures *textures)
 {
-	xpm_image(game, (char *)textures->strings.north, &textures->pointers.north);
-	xpm_image(game, (char *)textures->strings.east, &textures->pointers.east);
-	xpm_image(game, (char *)textures->strings.west, &textures->pointers.west);
-	xpm_image(game, (char *)textures->strings.south, &textures->pointers.south);
-	if (textures->strings.ceiling)
-		xpm_image(game, (char *)textures->strings.ceiling, &textures->pointers.ceiling);
-	if (textures->strings.floor)
-		xpm_image(game, (char *)textures->strings.floor, &textures->pointers.floor);
-
 	xpm_image(game, (char *)textures->strings.north, &textures->texture[N_N].img);
 	textures->texture[N_N].addr = mlx_get_data_addr(textures->texture[N_N].img, &textures->texture[N_N].bpp, &textures->texture[N_N].line_length, &textures->texture[N_N].endian);
 	xpm_image(game, (char *)textures->strings.east, &textures->texture[E_N].img);
@@ -51,58 +42,9 @@ void	create_textures(t_game *game, t_textures *textures)
 		xpm_image(game, (char *)textures->strings.floor, &textures->texture[F_N].img);
 		textures->texture[F_N].addr = mlx_get_data_addr(textures->texture[F_N].img, &textures->texture[F_N].bpp, &textures->texture[F_N].line_length, &textures->texture[F_N].endian);	
 	}
+	xpm_image(game, "./textures/xpm/wall.xpm", &textures->door.img);
+	textures->door.addr = mlx_get_data_addr(textures->door.img, &textures->door.bpp, &textures->door.line_length, &textures->door.endian);
 }
-
-// void setup_doors(t_game *game)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	x;
-// 	int	index;
-
-// 	i = 0;
-// 	j = 0;
-// 	x = 0;
-// 	index = 0;
-// 	while (game->map.map[j])
-// 	{
-// 		i = 0;
-// 		while (game->map.map[j][i])
-// 		{
-// 			if (game->map.map[j][i] == 'D')
-// 				x++;
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// 	if (x > 0)
-// 		game->map.doors = malloc(sizeof(t_door *) * (x + 1));
-// 	else
-// 		game->map.doors = NULL;
-// 	i = 0;
-// 	j = 0;
-// 	while (game->map.map[j])
-// 	{
-// 		i = 0;
-// 		while (game->map.map[j][i])
-// 		{
-// 			if (game->map.map[j][i] == 'D')
-// 			{
-// 				game->map.doors[index].open = 0;
-// 				game->map.doors[index].x = i;
-// 				game->map.doors[index++].y = j;
-// 			}
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// 	i = 0;
-// 	if (game->map.doors)
-// 	{
-// 		if (game->map.doors[i])
-// 		printf("%d\n", );
-// 	}
-// }
 
 void	parsing(char *path, t_game *game)
 {
@@ -117,5 +59,4 @@ void	parsing(char *path, t_game *game)
 	get_map(game, &game->map, index);
 	validate_map(&game->map, game);
 	create_textures(game, &game->textures);
-	// setup_doors(game);
 }

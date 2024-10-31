@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:54:07 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/13 15:34:27 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:25:45 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,45 @@ void	no_void(t_map *map, t_game *game)
 	}
 }
 
+void	parse_doors(t_map *map, t_game *game)
+{
+	int	i;
+	int	j;
+	int	valid;
+
+	i = -1;
+	valid = 1;
+	while (map->map[++i])
+	{
+		j = -1;
+		while (map->map[i][++j])
+		{
+			if (map->map[i][j] == DOOR)
+			{
+				if (map->map[i - 1][j] == WALL)
+				{
+					if (map->map[i + 1][j] == WALL)
+						if (map->map[i][j - 1] == FLOOR)
+							if (map->map[i][j + 1] == FLOOR)
+								valid = 0;
+				}
+				else if (map->map[i][j - 1] == WALL)
+				{
+					if (map->map[i][j + 1] == WALL)
+						if (map->map[i - 1][j] == FLOOR)
+							if (map->map[i + 1][j] == FLOOR)
+								valid = 0;
+				}
+				else 
+					errorer(game, 3, DOOR_ERR);
+			}
+		}
+	}
+}
+
 void	validate_map(t_map *map, t_game *game)
 {
 	check_player(map, game);
 	no_void(map, game);
+	parse_doors(map, game);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/28 15:12:39 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:47:35 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@
 # define XPM		"Invalid .xpm file.\n"
 # define NOT_TXTR	"Non-texture found in file.\n"
 # define CANT_TXTR	"Couldn't get all textures.\n"
+# define DOOR_ERR	"Door needs to be between exactly 2 walls.\n"
 # define INV_CF		"Invalid assignment of ceiling/floor.\n"
 # define SMOL_MAP	"Map too small.\n"
 # define NO_MAP		"Map doesn't exist.\n"
@@ -143,8 +144,8 @@ typedef struct s_sprite
 
 typedef struct s_textures
 {
-	t_txtr		pointers;
 	t_data		texture[6];
+	t_data		door;
 	t_txtr		strings;
 	int			floor;
 	int			ceiling;
