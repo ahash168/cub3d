@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/30 14:41:40 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:17:38 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,10 +191,10 @@ void	door_str(t_game *game)
 	y = (int)game->map.player_y;
 	if (door_checker(game, x, y, 'D'))
 		mlx_string_put(game->mlx, game->window, 960, 540, 0xFFFFFF, \
-		"OPEN DOORRRR");
+		"OPEN DOORRRR [E]");
 	else if (door_checker(game, x, y, 'O'))
 		mlx_string_put(game->mlx, game->window, 960, 540, 0xFFFFFF, \
-		"CLOSE DOORRRR");
+		"CLOSE DOORRRR [E]");
 }
 
 void	rendermap(t_game *game)

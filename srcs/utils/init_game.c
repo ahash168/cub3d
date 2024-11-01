@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:36:50 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/26 19:41:42 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:26:09 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,13 @@
 
 void	init_textures(t_textures *textures)
 {
-	textures->pointers.north = NULL;
-	textures->pointers.east = NULL;
-	textures->pointers.west = NULL;
-	textures->pointers.south = NULL;
-	textures->pointers.ceiling = NULL;
-	textures->pointers.floor = NULL;
 	textures->texture[N_N].img = NULL;
 	textures->texture[E_N].img = NULL;
 	textures->texture[W_N].img = NULL;
 	textures->texture[S_N].img = NULL;
 	textures->texture[C_N].img = NULL;
 	textures->texture[F_N].img = NULL;
+	textures->door.img = NULL;
 	textures->strings.north = NULL;
 	textures->strings.east = NULL;
 	textures->strings.west = NULL;
@@ -60,20 +55,12 @@ void	init_map(t_map *map)
 	map->player = 0;
 }
 
-// void	init_counter(t_counter *counter)
-// {
-// 	clock_gettime(CLOCK_MONOTONIC, &(counter->previous));
-// 	clock_gettime(CLOCK_MONOTONIC, &(counter->now));
-// 	counter->c = 0;
-// }
-
 void	init_game(t_game *game)
 {
 	init_file(&game->file);
 	init_textures(&game->textures);
 	init_map(&game->map);
 	game->counter = 0;
-	// init_counter(&game->counter);
 	game->mlx = mlx_init();
 	game->window = NULL;
 }
