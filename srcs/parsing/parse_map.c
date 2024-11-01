@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:53:35 by ahashem           #+#    #+#             */
-/*   Updated: 2024/09/30 20:14:54 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/01 22:24:49 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	get_angle(t_game *game, char **map, int height)
 	while (i < height)
 	{
 		j = 0;
-		while  (map[i][j])
+		while (map[i][j])
 		{
 			if (ft_strchr("NEWS", map[i][j]))
 			{

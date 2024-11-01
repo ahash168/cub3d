@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/11/01 14:37:31 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/11/02 00:42:32 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ typedef struct s_data
 	int		bpp;
 	int		line_length;
 	int		endian;
+	int		height;
+	int		width;
 }	t_data;
 
 typedef struct s_file
@@ -167,7 +169,7 @@ typedef struct s_ray_data
 	float	distance;
 	float	fisheye;
 	float	wall_h;
-	int		side;
+	int		door_flag;
 	float	intercept;
 	t_data	*current_texture;
 }	t_ray_data;
@@ -209,6 +211,7 @@ int		assign_texture(char *str, char **texture, t_game *game, int err_flag);
 void	get_map(t_game *game, t_map *map, int index);
 int		map_line(char *str, int flag, t_game *game);
 void	validate_map(t_map *map, t_game *game);
+void	create_textures(t_game *game, t_textures *textures);
 
 int		empty_line(char *str);
 void	free_array(char **arr);
@@ -227,6 +230,7 @@ void	rendermap(t_game *game);
 void	rays(t_game *game, t_ray_data *ray_arr);
 void	make_images(t_game *game);
 void	doors(t_game *game);
+void	limit_angle(float *angle, float offset);
 
 //						utils						//
 void	errorer(void *ptr, int dimension, char *m);

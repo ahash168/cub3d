@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raaaaays.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/11/01 14:41:08 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/11/02 03:34:11 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	draw_vertical_line(t_game *game, int x, float h, int window_height, float d
 			y++;
 		}
 		final = y;
+		(void) final;
 		while (y < window_height)
 		{
 			int clr = shade_floor(game->textures.floor, y, window_height);
@@ -194,12 +195,16 @@ int	find_wall(float x, float y, t_game *game)
 	if (map_y >= game->map.height || map_x >= game->map.width)
 		return (0);
 	if (game->map.map[map_y] && map_x <= (int)ft_strlen(game->map.map[map_y]))
-		if (game->map.map[map_y][map_x] == '1' || game->map.map[map_y][map_x] == 'D')
+	{
+		if (game->map.map[map_y][map_x] == '1')
 			return (0);
+		else if (game->map.map[map_y][map_x] == 'D')
+			return (2);
+	}
 	return (1);
 }
 
-int	get_h_inter(t_game *game, float ray_angle, float *hx, float *hy)
+int	get_h_inter(t_game *game, float ray_angle, t_ray_data *ray)
 {
 	float	x_step;
 	float	y_step;
@@ -207,20 +212,22 @@ int	get_h_inter(t_game *game, float ray_angle, float *hx, float *hy)
 
 	y_step = 64;
 	x_step = 64 / tan(ray_angle);
-	*hy = floor((game->map.player_y * 64) / 64) * 64;
-	pixel = inter_check(ray_angle, hy, &y_step, 1);
-	*hx = ((game->map.player_x * 64)) + (*hy - ((game->map.player_y * 64))) / tan(ray_angle);
+	ray->hy = floor((game->map.player_y * 64) / 64) * 64;
+	pixel = inter_check(ray_angle, &ray->hy, &y_step, 1);
+	ray->hx = ((game->map.player_x * 64)) + (ray->hy - ((game->map.player_y * 64))) / tan(ray_angle);
 	if ((unit_circle(ray_angle, 'y') && x_step > 0) || (!unit_circle(ray_angle, 'y') && x_step < 0))
 		x_step *= -1;
-	while (find_wall(*hx, *hy - pixel, game))
+	while (find_wall(ray->hx, ray->hy - pixel, game))
 	{
-		*hx += x_step;
-		*hy += y_step;
+		ray->hx += x_step;
+		ray->hy += y_step;
+		if (find_wall(ray->hx, ray->hy - pixel, game) == 2)
+			ray->door_flag = 1;
 	}
-	return (sqrt(pow(*hx - ((game->map.player_x * 64)), 2) + pow(*hy - ((game->map.player_y * 64)), 2)));
+	return (sqrt(pow(ray->hx - ((game->map.player_x * 64)), 2) + pow(ray->hy - ((game->map.player_y * 64)), 2)));
 }
 
-int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
+int	get_v_inter(t_game *game, float ray_angle, t_ray_data *ray)
 {
 	float	x_step;
 	float	y_step;
@@ -228,17 +235,19 @@ int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
 
 	x_step = 64;
 	y_step = 64 * tan(ray_angle);
-	*vx = floor((game->map.player_x * 64) / 64) * 64;
-	pixel = inter_check(ray_angle, vx, &x_step, 0);
-	*vy = (game->map.player_y * 64) + (*vx - (game->map.player_x * 64)) * tan(ray_angle);
+	ray->vx = floor((game->map.player_x * 64) / 64) * 64;
+	pixel = inter_check(ray_angle, &ray->vx, &x_step, 0);
+	ray->vy = (game->map.player_y * 64) + (ray->vx - (game->map.player_x * 64)) * tan(ray_angle);
 	if ((unit_circle(ray_angle, 'x') && y_step < 0) || (!unit_circle(ray_angle, 'x') && y_step > 0))
 		y_step *= -1;
-	while (find_wall(*vx - pixel, *vy, game))
+	while (find_wall(ray->vx - pixel, ray->vy, game))
 	{
-		*vx += x_step;
-		*vy += y_step;
+		ray->vx += x_step;
+		ray->vy += y_step;
+		if (find_wall(ray->vx - pixel, ray->vy, game) == 2)
+			ray->door_flag = 1;
 	}
-	return (sqrt(pow(*vx - (game->map.player_x * 64), 2) + pow(*vy - (game->map.player_y * 64), 2)));
+	return (sqrt(pow(ray->vx - (game->map.player_x * 64), 2) + pow(ray->vy - (game->map.player_y * 64), 2)));
 }
 
 void	limit_angle(float *angle, float offset)
@@ -252,29 +261,37 @@ void	limit_angle(float *angle, float offset)
 
 void	init_ray(t_game *game, t_ray_data *ray, float angle)
 {
+	ray->door_flag = 0;
 	ray->fisheye = game->map.angle - angle;
 	limit_angle(&ray->fisheye, 0);
-	ray->v_inter = get_v_inter(game, angle, &ray->vx, &ray->vy);
-	ray->h_inter = get_h_inter(game, angle, &ray->hx, &ray->hy);
+	ray->v_inter = get_v_inter(game, angle, ray);
+	ray->h_inter = get_h_inter(game, angle, ray);
 	if (ray->v_inter < ray->h_inter)
+	{
 		ray->intercept = ray->vy;
+		ray->distance = ray->v_inter * cosf(ray->fisheye);
+		if (angle > PI / 2 && angle <= 3 * PI / 2)
+			ray->current_texture = &game->textures.texture[W_N];
+		else
+			ray->current_texture = &game->textures.texture[E_N];
+	}
 	else
+	{
 		ray->intercept = ray->hx;
-	// you can makw a function over here that takes the values of the intercept
-	// and hx, hy / vx, vy (based on which inter) and check and then assign
-	// ray->side to the enum u have
-	ray->side = -1;
-	// then based on that assign the current the texture here, ill norm the rest
-	// after
-	// ray->current_texture = ??
-	ray->distance = -1.f;
-	ray->wall_h = -1.f;
+		ray->distance = ray->h_inter * cosf(ray->fisheye);
+		if (angle > 0 && angle <= PI)
+			ray->current_texture = &game->textures.texture[S_N];
+		else
+			ray->current_texture = &game->textures.texture[N_N];
+	}
+	if (ray->door_flag)
+		ray->current_texture = &game->textures.door;
 }
 
 void	rays(t_game *game, t_ray_data *ray_arr)
 {
 	int		r;
-	t_data	*current_texture;
+	// t_data	*current_texture;
 	float	ray_angle;
 
 	r = 0;
@@ -283,19 +300,11 @@ void	rays(t_game *game, t_ray_data *ray_arr)
 	while (r < WINDOW_W)
 	{
 		init_ray(game, &ray_arr[r], ray_angle);
-		if (ray_arr[r].v_inter < ray_arr[r].h_inter)
-		{
-			ray_arr[r].distance = ray_arr[r].v_inter * cosf(ray_arr[r].fisheye);
-			current_texture = &game->textures.texture[W_N];
-		}
-		else
-		{
-			ray_arr[r].distance = ray_arr[r].h_inter * cosf(ray_arr[r].fisheye);
-			current_texture = &game->textures.texture[W_N];
-		}
+		ray_arr[r].distance = -1.f;
+		ray_arr[r].wall_h = -1.f;
 		ray_arr[r].wall_h = (64 / ray_arr[r].distance) * game->wall_factor;
 		draw_vertical_line(game, r, ray_arr[r].wall_h, WINDOW_H, \
-		ray_arr[r].distance, current_texture, ray_arr[r].intercept);
+		ray_arr[r].distance, ray_arr[r].current_texture, ray_arr[r].intercept);
 		//this function (d_v_l) will change A LOT once you are done w ur part
 		r++;
 		limit_angle(&ray_angle, game->offset);
