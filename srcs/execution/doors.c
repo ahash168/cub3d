@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:27:38 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/26 20:49:18 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:43:21 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ int	check_door(t_game *game, float a, int open, int which)
 		return (1);
 	return (0);
 }
+
+// idk if its here but the angle and door message dont always work on some
+// angles so could you please check? use the "limit_angle" function with 0 as the offset
+// u can pass the function as the param to check_door function, p sure thatll fix it
 
 void	doors(t_game *game)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/30 15:47:35 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/01 14:37:31 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,16 +160,16 @@ typedef struct s_ray_data
 {
 	float	h_inter;
 	float	v_inter;
-	float	ray_angle;
-	float	offset;
 	float	hx;
 	float	hy;
 	float	vx;
 	float	vy;
-	float	final;
+	float	distance;
 	float	fisheye;
 	float	wall_h;
 	int		side;
+	float	intercept;
+	t_data	*current_texture;
 }	t_ray_data;
 
 typedef struct s_game
@@ -177,6 +177,9 @@ typedef struct s_game
 	void		*mlx;
 	void		*window;
 	int			counter;
+	float		fov_rd;
+	float		offset;
+	float		wall_factor;
 	t_map		map;
 	t_textures	textures;
 	t_file		file;
@@ -221,15 +224,9 @@ int		move_player(t_game *game);
 int		rotate_player(t_game *game);
 void	rendermap(t_game *game);
 
-void	rays(t_game *game);
-void	raaaaays(t_game *game);
-
+void	rays(t_game *game, t_ray_data *ray_arr);
 void	make_images(t_game *game);
-int		animation(t_game *game);
-
 void	doors(t_game *game);
-
-int		close_game(t_game *game, int flag);
 
 //						utils						//
 void	errorer(void *ptr, int dimension, char *m);
@@ -241,7 +238,6 @@ void	init_map(t_map *map);
 void	init_textures(t_textures *textures);
 void	pixel_put(t_data *data, int x, int y, int color);
 
-void	make_images(t_game *game);
 void	destroy_images(t_game *game);
 
 #endif

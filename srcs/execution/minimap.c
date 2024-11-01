@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/10/30 15:17:38 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/01 14:45:12 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,13 @@ void	draw_small(t_game *game, int x, int y, int draw_x, int draw_y)
 	if (in_bounds(game, x, y))
 	{
 		if (game->map.map[y / 40][x / 40] == '1')
-			pixel_put(&game->img, draw_x, draw_y, 0x9c9358);
+			pixel_put(&game->img, draw_x, draw_y, 0x5e5e5d);
 		else if (game->map.map[y / 40][x / 40] == ' ')
 			pixel_put(&game->img, draw_x, draw_y, 0x000000);
+		else if (game->map.map[y / 40][x / 40] == 'D')
+			pixel_put(&game->img, draw_x, draw_y, 0x422b19);
 		else
-			pixel_put(&game->img, draw_x, draw_y, 0x000000);
+			pixel_put(&game->img, draw_x, draw_y, game->textures.floor);
 	}
 	else
 		pixel_put(&game->img, draw_x, draw_y, 0x000000);
@@ -203,8 +205,7 @@ void	rendermap(t_game *game)
 	game->img.img = mlx_new_image(game->mlx, 1920, 1080);
 	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bpp, \
 	&game->img.line_length, &game->img.endian);
-	// raaaaays(game);
-	rays(game);
+	rays(game, game->rays);
 	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx, game->window, \
 	game->img.img, 0, 0);
@@ -213,3 +214,6 @@ void	rendermap(t_game *game)
 	door_str(game);
 	mlx_destroy_image(game->mlx, game->img.img);
 }
+
+// ill branch out and work on minimap norm now rn, ill add a new
+// struct for it and make it better and shorter

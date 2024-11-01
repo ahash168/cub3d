@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:36:50 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/30 15:26:09 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/01 14:38:18 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#define DR	0.0174533f
 
 void	init_textures(t_textures *textures)
 {
@@ -63,4 +64,7 @@ void	init_game(t_game *game)
 	game->counter = 0;
 	game->mlx = mlx_init();
 	game->window = NULL;
+	game->fov_rd = 60.f * DR;
+	game->wall_factor = 960.f / tanf(game->fov_rd / 2.f);
+	game->offset = game->fov_rd / WINDOW_W;
 }

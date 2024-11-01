@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:54:07 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/30 16:25:45 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/01 14:49:39 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ void	no_void(t_map *map, t_game *game)
 	}
 }
 
+// cute thank u but please norm, move the nested ifs to new functions or sum
+// also please HEAVILY test doors if they could segfault, lets say u toss a door
+// in the corner of the map or edge or block the door fully or sumn idk
 void	parse_doors(t_map *map, t_game *game)
 {
 	int	i;

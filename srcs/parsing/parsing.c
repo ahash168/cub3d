@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:49:03 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/30 15:32:21 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/01 14:48:06 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	xpm_image(t_game *game, char *file, void **texture)
 	if (!(*texture))
 		errorer(game, 3, XPM);
 }
+
+// PLEASE FOR THE LOVE OF GOD IM CRYING PLEASE NORM THIS
 
 void	create_textures(t_game *game, t_textures *textures)
 {

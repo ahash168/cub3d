@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/30 14:59:37 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/11/01 14:41:08 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,111 +250,58 @@ void	limit_angle(float *angle, float offset)
 		(*angle) -= (2 * M_PI);
 }
 
-void	raaaaays(t_game *game)
-{
-	float	fov_rd;
-	float	h_inter;
-	float	v_inter;
-	int		ray;
-	float	ray_angle;
-	float	offset;
-	float	hx;
-	float	hy;
-	float	vx;
-	float	vy;
-	float	final;
-	float	no_fishy;
-	fov_rd = 60.0f * DR;
-	float	pierce = tanf(fov_rd / 2.f);
-	t_data	*current_texture;
-
-	h_inter = 100000.f;
-	v_inter = 100000.f;
-	ray = 0;
-	ray_angle = game->map.angle - (fov_rd / 2.f);
-	limit_angle(&ray_angle, 0);
-	offset = fov_rd / WINDOW_W;
-	while (ray < WINDOW_W)
-	{
-		no_fishy = game->map.angle - ray_angle;
-		if (no_fishy < 0)
-			no_fishy += (2 * PI);
-		else if (no_fishy > (2 * PI))
-			no_fishy -= (2 * PI);
-		h_inter = get_h_inter(game, ray_angle, &hx, &hy);
-		v_inter = get_v_inter(game, ray_angle, &vx, &vy);
-		float	intercept = 0;
-		if (v_inter < h_inter)
-		{
-			intercept = vy;
-			final = v_inter * cosf(no_fishy);
-			current_texture = &game->textures.texture[W_N];
-		}
-		else
-		{
-			intercept = hx;
-			final = h_inter * cosf(no_fishy);
-			current_texture = &game->textures.texture[N_N];
-		}
-		float	wall_h = (64 / final) * (960 / pierce);
-		draw_vertical_line(game, ray, wall_h, 1080, final, current_texture, intercept);
-		ray++;
-		ray_angle += offset;
-		limit_angle(&ray_angle, 0);
-	}
-}
-
 void	init_ray(t_game *game, t_ray_data *ray, float angle)
 {
 	ray->fisheye = game->map.angle - angle;
 	limit_angle(&ray->fisheye, 0);
 	ray->v_inter = get_v_inter(game, angle, &ray->vx, &ray->vy);
-	if (ray->v_inter < 0.00001)
-		ray->v_inter = 1000000.f;
 	ray->h_inter = get_h_inter(game, angle, &ray->hx, &ray->hy);
-	if (ray->h_inter < 0.00001)
-		ray->h_inter = 1000000.f;
-	ray->final = -1.f; //name -> distance
+	if (ray->v_inter < ray->h_inter)
+		ray->intercept = ray->vy;
+	else
+		ray->intercept = ray->hx;
+	// you can makw a function over here that takes the values of the intercept
+	// and hx, hy / vx, vy (based on which inter) and check and then assign
+	// ray->side to the enum u have
 	ray->side = -1;
+	// then based on that assign the current the texture here, ill norm the rest
+	// after
+	// ray->current_texture = ??
+	ray->distance = -1.f;
 	ray->wall_h = -1.f;
 }
 
-void	rays(t_game *game)
+void	rays(t_game *game, t_ray_data *ray_arr)
 {
-	int		rays;
-	float	fov_rd;	//
-	float	offset;	//
-	t_data	*current_texture;//
-	float	intercept; //
+	int		r;
+	t_data	*current_texture;
 	float	ray_angle;
-	float	cache; //
-	
-	rays = 0;
-	fov_rd = 60.f * DR;
-	cache = tanf(fov_rd / 2.f); //
-	offset = fov_rd / WINDOW_W; //
-	ray_angle = game->map.angle - (fov_rd / 2.f);
+
+	r = 0;
+	ray_angle = game->map.angle - (game->fov_rd / 2.f);
 	limit_angle(&ray_angle, 0);
-	while (rays < WINDOW_W)
+	while (r < WINDOW_W)
 	{
-		init_ray(game, &game->rays[rays], ray_angle);
-		if (game->rays[rays].v_inter < game->rays[rays].h_inter)
-		{ //
-			game->rays[rays].final = game->rays[rays].v_inter * cosf(game->rays[rays].fisheye);	
-			current_texture = &game->textures.texture[W_N]; //
-			intercept = game->rays[rays].vy; //
-		} //
+		init_ray(game, &ray_arr[r], ray_angle);
+		if (ray_arr[r].v_inter < ray_arr[r].h_inter)
+		{
+			ray_arr[r].distance = ray_arr[r].v_inter * cosf(ray_arr[r].fisheye);
+			current_texture = &game->textures.texture[W_N];
+		}
 		else
-		{ //
-			game->rays[rays].final = game->rays[rays].h_inter * cosf(game->rays[rays].fisheye);	
-			current_texture = &game->textures.texture[W_N]; //
-			intercept = game->rays[rays].hx; //
-		} //
-		game->rays[rays].wall_h = (64 / game->rays[rays].final) * (960 / cache);
-		draw_vertical_line(game, rays, game->rays[rays].wall_h, WINDOW_H, \
-		game->rays[rays].final, current_texture, intercept);
-		rays++;
-		limit_angle(&ray_angle, offset);
+		{
+			ray_arr[r].distance = ray_arr[r].h_inter * cosf(ray_arr[r].fisheye);
+			current_texture = &game->textures.texture[W_N];
+		}
+		ray_arr[r].wall_h = (64 / ray_arr[r].distance) * game->wall_factor;
+		draw_vertical_line(game, r, ray_arr[r].wall_h, WINDOW_H, \
+		ray_arr[r].distance, current_texture, ray_arr[r].intercept);
+		//this function (d_v_l) will change A LOT once you are done w ur part
+		r++;
+		limit_angle(&ray_angle, game->offset);
 	}
 }
-//	to be added to struct
+
+// i think u can also add a flag to the struct to determine if we landed on a wall or not
+// so instead of worrying ab picking the side of the wall u js render the door immediately
+// so itll be oh if this flag, assign the texture to door, else, check wall sides
