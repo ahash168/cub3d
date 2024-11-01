@@ -6,7 +6,7 @@
 /*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:43:53 by ahashem           #+#    #+#             */
-/*   Updated: 2024/10/28 13:08:56 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:59:37 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #define DR	0.0174533f
 #define P2	PI/2.f
 #define P3	3.f * PI/2
-#define WINDOW_W 1920
-#define WINDOW_H 1080
 #define MINIMUM 50.f
 #define MAXIMUM 350.f
 #define MINIMUMF 50.f
@@ -243,12 +241,21 @@ int	get_v_inter(t_game *game, float ray_angle, float *vx, float *vy)
 	return (sqrt(pow(*vx - (game->map.player_x * 64), 2) + pow(*vy - (game->map.player_y * 64), 2)));
 }
 
+void	limit_angle(float *angle, float offset)
+{
+	(*angle) += offset;
+	if ((*angle) < 0)
+		(*angle) += (2 * M_PI);
+	else if ((*angle) > (2 * M_PI))
+		(*angle) -= (2 * M_PI);
+}
+
 void	raaaaays(t_game *game)
 {
 	float	fov_rd;
 	float	h_inter;
 	float	v_inter;
-	float	ray;
+	int		ray;
 	float	ray_angle;
 	float	offset;
 	float	hx;
@@ -261,14 +268,11 @@ void	raaaaays(t_game *game)
 	float	pierce = tanf(fov_rd / 2.f);
 	t_data	*current_texture;
 
-	h_inter = 0.0f;
-	v_inter = 0.0f;
+	h_inter = 100000.f;
+	v_inter = 100000.f;
 	ray = 0;
 	ray_angle = game->map.angle - (fov_rd / 2.f);
-	if (ray_angle < 0)
-		ray_angle += (2 * PI);
-	else if (ray_angle > (2 * PI))
-		ray_angle -= (2 * PI);
+	limit_angle(&ray_angle, 0);
 	offset = fov_rd / WINDOW_W;
 	while (ray < WINDOW_W)
 	{
@@ -296,9 +300,61 @@ void	raaaaays(t_game *game)
 		draw_vertical_line(game, ray, wall_h, 1080, final, current_texture, intercept);
 		ray++;
 		ray_angle += offset;
-		if (ray_angle < 0)
-			ray_angle += (2 * PI);
-		else if (ray_angle > (2 * PI))
-			ray_angle -= (2 * PI);
+		limit_angle(&ray_angle, 0);
 	}
 }
+
+void	init_ray(t_game *game, t_ray_data *ray, float angle)
+{
+	ray->fisheye = game->map.angle - angle;
+	limit_angle(&ray->fisheye, 0);
+	ray->v_inter = get_v_inter(game, angle, &ray->vx, &ray->vy);
+	if (ray->v_inter < 0.00001)
+		ray->v_inter = 1000000.f;
+	ray->h_inter = get_h_inter(game, angle, &ray->hx, &ray->hy);
+	if (ray->h_inter < 0.00001)
+		ray->h_inter = 1000000.f;
+	ray->final = -1.f; //name -> distance
+	ray->side = -1;
+	ray->wall_h = -1.f;
+}
+
+void	rays(t_game *game)
+{
+	int		rays;
+	float	fov_rd;	//
+	float	offset;	//
+	t_data	*current_texture;//
+	float	intercept; //
+	float	ray_angle;
+	float	cache; //
+	
+	rays = 0;
+	fov_rd = 60.f * DR;
+	cache = tanf(fov_rd / 2.f); //
+	offset = fov_rd / WINDOW_W; //
+	ray_angle = game->map.angle - (fov_rd / 2.f);
+	limit_angle(&ray_angle, 0);
+	while (rays < WINDOW_W)
+	{
+		init_ray(game, &game->rays[rays], ray_angle);
+		if (game->rays[rays].v_inter < game->rays[rays].h_inter)
+		{ //
+			game->rays[rays].final = game->rays[rays].v_inter * cosf(game->rays[rays].fisheye);	
+			current_texture = &game->textures.texture[W_N]; //
+			intercept = game->rays[rays].vy; //
+		} //
+		else
+		{ //
+			game->rays[rays].final = game->rays[rays].h_inter * cosf(game->rays[rays].fisheye);	
+			current_texture = &game->textures.texture[W_N]; //
+			intercept = game->rays[rays].hx; //
+		} //
+		game->rays[rays].wall_h = (64 / game->rays[rays].final) * (960 / cache);
+		draw_vertical_line(game, rays, game->rays[rays].wall_h, WINDOW_H, \
+		game->rays[rays].final, current_texture, intercept);
+		rays++;
+		limit_angle(&ray_angle, offset);
+	}
+}
+//	to be added to struct

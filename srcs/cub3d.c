@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:21:58 by tabadawi          #+#    #+#             */
 /*   Updated: 2024/10/30 13:52:13 by ahashem          ###   ########.fr       */
@@ -12,7 +12,7 @@
 
 #include "../includes/cub3d.h"
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_game	game;
 

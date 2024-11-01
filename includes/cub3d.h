@@ -36,6 +36,8 @@
 # define WEST		'W'
 # define SOUTH		'S'
 # define DOOR		'D'
+# define WINDOW_W	1920
+# define WINDOW_H	1080
 # define ESC 		53
 # define UP			126
 # define DOWN		125
@@ -154,6 +156,22 @@ typedef struct s_textures
 	t_sprite	s;
 }	t_textures;
 
+typedef struct s_ray_data
+{
+	float	h_inter;
+	float	v_inter;
+	float	ray_angle;
+	float	offset;
+	float	hx;
+	float	hy;
+	float	vx;
+	float	vy;
+	float	final;
+	float	fisheye;
+	float	wall_h;
+	int		side;
+}	t_ray_data;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -164,6 +182,7 @@ typedef struct s_game
 	t_file		file;
 	t_data		img;
 	t_keys		keys;
+	t_ray_data	rays[WINDOW_W];
 }	t_game;
 
 /*****************************************************
