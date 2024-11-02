@@ -1,12 +1,12 @@
 
 
 
-SO   ./textures/xpm/wall.xpm
+SO   ./textures/xpm/1.xpm
 
-   NO   ./textures/xpm/wall.xpm
+   NO   ./textures/xpm/2.xpm
            
-           WE   ./textures/xpm/wall.xpm
-           EA    ./textures/xpm/wall.xpm
+           WE   ./textures/xpm/3.xpm
+           EA    ./textures/xpm/4.xpm
 
              F  163, 163, 163
 
@@ -28,7 +28,7 @@ SO   ./textures/xpm/wall.xpm
         1011000001110000000000001
         100100000000000000000011
 1111111101100001110000000000001
-100000000011000001110111111111111
+10000000001100000111011D111111111
 1111011111  1100011100000010001
 111101111111110001010100100011
   11000000110100011100000110001

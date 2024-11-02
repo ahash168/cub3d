@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/11/01 23:07:36 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/02 15:49:09 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int	door_checker(t_game *game, int x, int y, char c)
 		&& game->map.map[y][x - 1] == c)
 		|| ((game->map.angle <= 315 * DR && game->map.angle > 255 * DR) \
 		&& game->map.map[y - 1][x] == c)
-		|| (((game->map.angle <= 315 * DR && game->map.angle > 360 * DR) \
+		|| (((game->map.angle <= 360 * DR && game->map.angle > 315 * DR) \
 		|| (game->map.angle <= 45 * DR && game->map.angle > 0 * DR)) \
 		&& game->map.map[y][x + 1] == c))
 		return (1);

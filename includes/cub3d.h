@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/11/02 00:42:32 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/02 22:04:02 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,8 @@ typedef struct s_ray_data
 	float	distance;
 	float	fisheye;
 	float	wall_h;
-	int		door_flag;
+	int		door_flag_h;
+	int		door_flag_v;
 	float	intercept;
 	t_data	*current_texture;
 }	t_ray_data;
