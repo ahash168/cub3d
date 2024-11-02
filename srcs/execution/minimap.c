@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
 /*   Updated: 2024/11/02 18:50:21 by tabadawi         ###   ########.fr       */
@@ -244,12 +244,12 @@ void	draw_minimap(t_game *game)
 int	door_checker(t_game *game, int x, int y, char c)
 {
 	if (((game->map.angle <= 135 * DR && game->map.angle > 45 * DR) \
-	&& game->map.map[y + 1][x] == c)
+		&& game->map.map[y + 1][x] == c)
 		|| ((game->map.angle <= 255 * DR && game->map.angle > 135 * DR) \
 		&& game->map.map[y][x - 1] == c)
-		|| ((game->map.angle <= 255 * DR && game->map.angle > 315 * DR) \
+		|| ((game->map.angle <= 315 * DR && game->map.angle > 255 * DR) \
 		&& game->map.map[y - 1][x] == c)
-		|| (((game->map.angle <= 315 * DR && game->map.angle > 360 * DR) \
+		|| (((game->map.angle <= 360 * DR && game->map.angle > 315 * DR) \
 		|| (game->map.angle <= 45 * DR && game->map.angle > 0 * DR)) \
 		&& game->map.map[y][x + 1] == c))
 		return (1);

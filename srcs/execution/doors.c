@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doors.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:27:38 by ahashem           #+#    #+#             */
-/*   Updated: 2024/11/01 14:43:21 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/11/02 03:35:48 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ int	check_door(t_game *game, float a, int open, int which)
 	else if (which == 4)
 		x += 1;
 	angle = game->map.angle;
-	inc = 1 + ((a == 315) || (a == 0));
+	limit_angle(&angle, 0);
+	inc = 1 + ((a == 315 * DR) || (a == 0));
 	if (open == 1)
 		c = 'O';
 	else
 		c = 'D';
-	if ((angle <= (a + PI / inc) && angle > a) && game->map.map[y][x] == c)
+	if ((angle >= a && angle < a + PI / inc) && game->map.map[y][x] == c)
 		return (1);
 	return (0);
 }
@@ -50,11 +51,9 @@ void	doors(t_game *game)
 {
 	int		x;
 	int		y;
-	float	angle;
 
 	x = (int)game->map.player_x;
 	y = (int)game->map.player_y;
-	angle = game->map.angle;
 	if (check_door(game, 45 * DR, 0, 1))
 		game->map.map[y + 1][x] = 'O';
 	else if (check_door(game, 135 * DR, 0, 2))

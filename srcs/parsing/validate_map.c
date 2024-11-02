@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:54:07 by ahashem           #+#    #+#             */
-/*   Updated: 2024/11/01 14:49:39 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/11/01 22:52:28 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,39 +78,25 @@ void	no_void(t_map *map, t_game *game)
 	}
 }
 
-// cute thank u but please norm, move the nested ifs to new functions or sum
-// also please HEAVILY test doors if they could segfault, lets say u toss a door
-// in the corner of the map or edge or block the door fully or sumn idk
 void	parse_doors(t_map *map, t_game *game)
 {
-	int	i;
-	int	j;
-	int	valid;
+	int		i;
+	int		j;
+	char	**arr;
 
 	i = -1;
-	valid = 1;
-	while (map->map[++i])
+	arr = map->map;
+	while (arr[++i])
 	{
 		j = -1;
-		while (map->map[i][++j])
+		while (arr[i][++j])
 		{
-			if (map->map[i][j] == DOOR)
+			if (arr[i][j] == DOOR)
 			{
-				if (map->map[i - 1][j] == WALL)
-				{
-					if (map->map[i + 1][j] == WALL)
-						if (map->map[i][j - 1] == FLOOR)
-							if (map->map[i][j + 1] == FLOOR)
-								valid = 0;
-				}
-				else if (map->map[i][j - 1] == WALL)
-				{
-					if (map->map[i][j + 1] == WALL)
-						if (map->map[i - 1][j] == FLOOR)
-							if (map->map[i + 1][j] == FLOOR)
-								valid = 0;
-				}
-				else 
+				if (!((arr[i - 1][j] == WALL && arr[i + 1][j] == WALL
+					&& arr[i][j - 1] == FLOOR && arr[i][j + 1] == FLOOR)
+					|| (arr[i][j - 1] == WALL && arr[i][j + 1] == WALL
+					&& arr[i - 1][j] == FLOOR && arr[i + 1][j] == FLOOR)))
 					errorer(game, 3, DOOR_ERR);
 			}
 		}

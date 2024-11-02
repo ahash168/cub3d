@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_images.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tabadawi <tabadawi@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:16:39 by ahashem           #+#    #+#             */
-/*   Updated: 2024/11/01 14:50:15 by tabadawi         ###   ########.fr       */
+/*   Updated: 2024/11/02 15:45:16 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,6 @@ void	check_images(t_game *game)
 	}
 }
 
-
-// ok side note, our texture could vary and with that they could have different sizes
-// what i want you to do is go to the t_data struct and add 2 vars, int height and width
-// and then you can pass the address of them instead fo tile, for each texture and we will
-// automatically have their sizes, so that later in drawing we can be more flexible rather
-// than relying strictly on 256
 void	make_images(t_game *game)
 {
 	int	tile;
