@@ -6,12 +6,31 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 12:24:35 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/11/02 15:49:09 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/02 18:50:21 by tabadawi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 #define DR	0.0174533f
+
+typedef struct s_trig_xy
+{
+	int	x;
+	int	y;
+}	t_trig_xy;
+
+typedef struct s_mini_player
+{
+	t_trig_xy	tip;
+	t_trig_xy	base_left;
+	t_trig_xy	base_right;
+	t_trig_xy	center;
+	t_trig_xy	d;
+	t_trig_xy	init;
+	t_trig_xy	final;
+	int			inter1[4];
+	int			inter2[4];
+}	t_mini_player;
 
 void	ft_swap(int *a, int *b)
 {
@@ -22,76 +41,116 @@ void	ft_swap(int *a, int *b)
 	*b = temp;
 }
 
-int	interpolate(int y, int y1, int y2, int x1, int x2)
+void	swapper(t_mini_player *p)
 {
-	if (y2 == y1)
-		return (x1);
-	return (x1 + (x2 - x1) * (y - y1) / (y2 - y1));
-}
-
-void	fill_triangle(t_game *game, int x1, int y1, int x2, int y2, int x3, int y3, int color)
-{
-	if (y2 < y1)
+	if (p->base_left.y < p->tip.y)
 	{
-		ft_swap(&x1, &x2);
-		ft_swap(&y1, &y2);
+		ft_swap(&p->tip.x, &p->base_left.x);
+		ft_swap(&p->tip.y, &p->base_left.y);
 	}
-	if (y3 < y1)
+	if (p->base_right.y < p->tip.y)
 	{
-		ft_swap(&x1, &x3);
-		ft_swap(&y1, &y3);
+		ft_swap(&p->tip.x, &p->base_right.x);
+		ft_swap(&p->tip.y, &p->base_right.y);
 	}
-	if (y3 < y2)
+	if (p->base_right.y < p->base_left.y)
 	{
-		ft_swap(&x2, &x3);
-		ft_swap(&y2, &y3);
-	}
-	if (y2 != y1)
-	{
-		for (int y = y1; y <= y2; y++)
-		{
-			int	x_start = interpolate(y, y1, y2, x1, x2);
-			int	x_end = interpolate(y, y1, y3, x1, x3);
-			if (x_start > x_end)
-				ft_swap(&x_start, &x_end);
-			for (int x = x_start; x <= x_end; x++)
-				pixel_put(&game->img, x, y, color);
-		}
-	}
-	if (y3 != y2)
-	{
-		for (int y = y2; y <= y3; y++)
-		{
-			int	x_start = interpolate(y, y2, y3, x2, x3);
-			int	x_end = interpolate(y, y1, y3, x1, x3);
-			if (x_start > x_end)
-				ft_swap(&x_start, &x_end);
-			for (int x = x_start; x <= x_end; x++)
-				pixel_put(&game->img, x, y, color);
-		}
+		ft_swap(&p->base_left.x, &p->base_right.x);
+		ft_swap(&p->base_left.y, &p->base_right.y);
 	}
 }
 
-void	draw_filled_arrow(t_game *game, int x_center, int y_center, float angle, int size, int color)
+int	interpolate(int y, int inter[4])
 {
-	int	tip_x = x_center + cosf(angle) * size;
-	int	tip_y = y_center + sinf(angle) * size;
-	int	base_left_x = x_center + cosf(angle + M_PI_2) * (size / 2);
-	int	base_left_y = y_center + sinf(angle + M_PI_2) * (size / 2);
-	int	base_right_x = x_center + cosf(angle - M_PI_2) * (size / 2);
-	int	base_right_y = y_center + sinf(angle - M_PI_2) * (size / 2);
-	int	center_x = (tip_x + base_left_x + base_right_x) / 3;
-	int	center_y = (tip_y + base_left_y + base_right_y) / 3;
-	int	dx = x_center - center_x;
-	int	dy = y_center - center_y;
+	if (inter[1] == inter[0])
+	{
+		printf("HEYO\n");
+		return (inter[2]);
+	}
+	return (inter[2] + (inter[3] - inter[2]) * \
+	(y - inter[0]) / (inter[1] - inter[0]));
+}
 
-	tip_x += dx;
-	tip_y += dy;
-	base_left_x += dx;
-	base_left_y += dy;
-	base_right_x += dx;
-	base_right_y += dy;
-	fill_triangle(game, tip_x, tip_y, base_left_x, base_left_y, base_right_x, base_right_y, color);
+void	fill(t_game *game, t_mini_player p)
+{
+	int	y;
+	int	x;
+
+	y = p.init.y - 1;
+	while (++y <= p.final.y)
+	{
+		p.init.x = interpolate(y, p.inter1);
+		p.final.x = interpolate(y, p.inter2);
+		if (p.init.x > p.final.x)
+			ft_swap(&p.init.x, &p.final.x);
+		x = p.init.x - 1;
+		while (++x <= p.final.x)
+			pixel_put(&game->img, x, y, 0xFFFFFF);
+	}
+}
+
+void	assign_inter(t_mini_player *p, int flag)
+{
+	p->inter2[0] = p->tip.y;
+	p->inter2[1] = p->base_right.y;
+	p->inter2[2] = p->tip.x;
+	p->inter2[3] = p->base_right.x;
+	if (flag == 1)
+	{
+		p->inter1[0] = p->tip.y;
+		p->inter1[1] = p->base_left.y;
+		p->inter1[2] = p->tip.x;
+		p->inter1[3] = p->base_left.x;
+	}
+	else if (flag == 2)
+	{
+		p->inter1[0] = p->base_left.y;
+		p->inter1[1] = p->base_right.y;
+		p->inter1[2] = p->base_left.x;
+		p->inter1[3] = p->base_right.x;
+	}
+}
+
+void	triangle(t_game *game, t_mini_player p)
+{
+	swapper(&p);
+	if (p.base_left.y != p.tip.y)
+	{
+		assign_inter(&p, 1);
+		p.init.y = p.tip.y;
+		p.final.y = p.base_left.y;
+		fill(game, p);
+	}
+	if (p.base_right.y != p.base_left.y)
+	{
+		assign_inter(&p, 2);
+		p.init.y = p.base_left.y;
+		p.final.y = p.base_right.y;
+		fill(game, p);
+	}
+}
+
+void	draw_player(t_game *game, int x_center, int y_center, float angle)
+{
+	t_mini_player	p;
+
+	p.tip.x = x_center + cosf(angle) * 20;
+	p.tip.y = y_center + sinf(angle) * 20;
+	p.base_left.x = x_center + cosf(angle + M_PI_2) * 10;
+	p.base_left.y = y_center + sinf(angle + M_PI_2) * 10;
+	p.base_right.x = x_center + cosf(angle - M_PI_2) * 10;
+	p.base_right.y = y_center + sinf(angle - M_PI_2) * 10;
+	p.center.x = (p.tip.x + p.base_left.x + p.base_right.x) / 3;
+	p.center.y = (p.tip.y + p.base_left.y + p.base_right.y) / 3;
+	p.d.x = x_center - p.center.x;
+	p.d.y = y_center - p.center.y;
+	p.tip.x += p.d.x;
+	p.tip.y += p.d.y;
+	p.base_left.x += p.d.x;
+	p.base_left.y += p.d.y;
+	p.base_right.x += p.d.x;
+	p.base_right.y += p.d.y;
+	triangle(game, p);
 }
 
 int	in_bounds(t_game *game, int x, int y)
@@ -104,69 +163,82 @@ int	in_bounds(t_game *game, int x, int y)
 	return (0);
 }
 
-void	draw_small(t_game *game, int x, int y, int draw_x, int draw_y)
-{
-	if (in_bounds(game, x, y))
-	{
-		if (game->map.map[y / 40][x / 40] == '1')
-			pixel_put(&game->img, draw_x, draw_y, 0x5e5e5d);
-		else if (game->map.map[y / 40][x / 40] == ' ')
-			pixel_put(&game->img, draw_x, draw_y, 0x000000);
-		else if (game->map.map[y / 40][x / 40] == 'D')
-			pixel_put(&game->img, draw_x, draw_y, 0x422b19);
-		else
-			pixel_put(&game->img, draw_x, draw_y, game->textures.floor);
-	}
-	else
-		pixel_put(&game->img, draw_x, draw_y, 0x000000);
-}
-
 void	draw_border(t_game *game)
 {
-	int	start_x = 40;
-	int	start_y = 40;
-	int	i = start_y;
-	int	j = start_x;
+	int	start_x;
+	int	start_y;
+	int	i;
+	int	j;
 
-	while (i < start_y + 320)
+	start_x = 40;
+	start_y = 40;
+	j = start_x;
+	i = start_y - 1;
+	while (++i < start_y + 320)
 	{
 		j = start_x;
 		while (j < start_x + 320)
 		{
 			pixel_put(&game->img, j, i, 0xffffff);
-			if ((j == start_x + 10) && ((i > start_y + 10) && (i < start_y + 310)))
+			if ((j == start_x + 10) && ((i > start_y + 10) \
+			&& (i < start_y + 310)))
 				j += 300;
 			else
 				j++;
 		}
-		i++;
 	}
+}
+
+typedef struct s_minimap
+{
+	int	i;
+	int	j;
+	int	x;
+	int	y;
+	int	draw_x;
+	int	draw_y;
+}	t_minimap;
+
+void	draw_small(t_game *game, t_minimap m)
+{
+	if (in_bounds(game, m.x, m.y))
+	{
+		if (game->map.map[m.y / 40][m.x / 40] == '1')
+			pixel_put(&game->img, m.draw_x, m.draw_y, 0x5e5e5d);
+		else if (game->map.map[m.y / 40][m.x / 40] == ' ')
+			pixel_put(&game->img, m.draw_x, m.draw_y, 0x000000);
+		else if (game->map.map[m.y / 40][m.x / 40] == 'D')
+			pixel_put(&game->img, m.draw_x, m.draw_y, 0x422b19);
+		else
+			pixel_put(&game->img, m.draw_x, m.draw_y, game->textures.floor);
+	}
+	else
+		pixel_put(&game->img, m.draw_x, m.draw_y, 0x000000);
 }
 
 void	draw_minimap(t_game *game)
 {
-	int	i, j, x, y;
-	int	draw_x, draw_y;
+	t_minimap	m;
 
-	i = game->map.player_y * 40;
-	j = game->map.player_x * 40;
-	y = i - 150;
-	draw_y = 50;
-	while (y < i + 150)
+	m.i = game->map.player_y * 40;
+	m.j = game->map.player_x * 40;
+	m.y = m.i - 150;
+	m.draw_y = 50;
+	while (m.y < m.i + 150)
 	{
-		draw_x = 50;
-		x = j - 150;
-		while (x < j + 150)
+		m.draw_x = 50;
+		m.x = m.j - 150;
+		while (m.x < m.j + 150)
 		{
-			draw_small(game, x, y, draw_x, draw_y);
-			x++;
-			draw_x++;
+			draw_small(game, m);
+			m.x++;
+			m.draw_x++;
 		}
-		y++;
-		draw_y++;
+		m.y++;
+		m.draw_y++;
 	}
 	draw_border(game);
-	draw_filled_arrow(game, 200, 200, game->map.angle, 20, 0xFFFFFF);
+	draw_player(game, 200, 200, game->map.angle);
 }
 
 int	door_checker(t_game *game, int x, int y, char c)
@@ -214,6 +286,3 @@ void	rendermap(t_game *game)
 	door_str(game);
 	mlx_destroy_image(game->mlx, game->img.img);
 }
-
-// ill branch out and work on minimap norm now rn, ill add a new
-// struct for it and make it better and shorter
