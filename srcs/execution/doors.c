@@ -6,12 +6,11 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 21:27:38 by ahashem           #+#    #+#             */
-/*   Updated: 2024/11/02 03:35:48 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/03 11:27:26 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-#define DR	0.0174533
 
 int	check_door(t_game *game, float a, int open, int which)
 {
@@ -34,18 +33,13 @@ int	check_door(t_game *game, float a, int open, int which)
 	angle = game->map.angle;
 	limit_angle(&angle, 0);
 	inc = 1 + ((a == 315 * DR) || (a == 0));
+	c = 'D';
 	if (open == 1)
-		c = 'O';
-	else
-		c = 'D';
-	if ((angle >= a && angle < a + PI / inc) && game->map.map[y][x] == c)
+		c += 11;
+	if ((angle >= a && angle < a + M_PI / inc) && game->map.map[y][x] == c)
 		return (1);
 	return (0);
 }
-
-// idk if its here but the angle and door message dont always work on some
-// angles so could you please check? use the "limit_angle" function with 0 as the offset
-// u can pass the function as the param to check_door function, p sure thatll fix it
 
 void	doors(t_game *game)
 {

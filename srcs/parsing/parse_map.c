@@ -6,12 +6,11 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 20:53:35 by ahashem           #+#    #+#             */
-/*   Updated: 2024/11/01 22:24:49 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/03 11:29:04 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-// #include <math.h>
 
 int	map_line(char *str, int flag, t_game *game)
 {
@@ -60,13 +59,13 @@ void	get_angle(t_game *game, char **map, int height)
 			if (ft_strchr("NEWS", map[i][j]))
 			{
 				if (map[i][j] == 'N')
-					game->map.angle = (3 * PI) / 2;
+					game->map.angle = (3 * M_PI) / 2;
 				else if (map[i][j] == 'E')
 					game->map.angle = 0;
 				else if (map[i][j] == 'W')
-					game->map.angle = PI;
+					game->map.angle = M_PI;
 				else if (map[i][j] == 'S')
-					game->map.angle = PI / 2;
+					game->map.angle = M_PI / 2;
 			}
 			j++;
 		}

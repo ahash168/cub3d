@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/11/02 22:04:02 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/03 14:34:24 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@
 # define S			1
 # define D			2
 # define E			14
-# define PI			3.14159265359
+# define DR			0.0174533f
+# define MINIMUM	50.f
+# define MAXIMUM	350.f
+# define MINIMUMF	50.f
+# define MAXIMUMF	350.f
 # define MALLOC		"ur such a failure, computer! ;p L\n"
 # define USAGE		"Usage: ./cub3d [map_path].cub\n"
 # define FILE_404	"File not found.\n"
@@ -82,6 +86,44 @@ enum e_type
 /*****************************************************
 *						structs						*
 *****************************************************/
+
+typedef struct s_minimap
+{
+	int	i;
+	int	j;
+	int	x;
+	int	y;
+	int	draw_x;
+	int	draw_y;
+}	t_minimap;
+
+typedef struct s_trig_xy
+{
+	int	x;
+	int	y;
+}	t_trig_xy;
+
+typedef struct s_mini_player
+{
+	t_trig_xy	tip;
+	t_trig_xy	base_left;
+	t_trig_xy	base_right;
+	t_trig_xy	center;
+	t_trig_xy	d;
+	t_trig_xy	init;
+	t_trig_xy	final;
+	int			inter1[4];
+	int			inter2[4];
+}	t_mini_player;
+
+typedef struct s_trgb
+{
+	unsigned int	trgb;
+	unsigned int	shaded;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+}	t_trgb;
 
 typedef struct s_keys
 {
@@ -226,12 +268,26 @@ int		keyrelease(int keysym, t_game *game);
 int		mouse(int x, int y, t_game *game);
 int		move_player(t_game *game);
 int		rotate_player(t_game *game);
-void	rendermap(t_game *game);
 
 void	rays(t_game *game, t_ray_data *ray_arr);
+
+void	init_ray(t_ray_data *ray);
+void	setup_ray(t_game *game, t_ray_data *ray, float angle);
+
+int		get_v_inter(t_game *game, float ray_angle, t_ray_data *ray);
+int		get_h_inter(t_game *game, float ray_angle, t_ray_data *ray);
+
+void	draw_vertical_line(t_game *game, int x, t_ray_data *ray);
+
+void	limit_angle(float *angle, float offset);
+
+void	rendermap(t_game *game);
+void	draw_minimap(t_game *game);
+void	triangle(t_game *game, t_mini_player p);
+
 void	make_images(t_game *game);
 void	doors(t_game *game);
-void	limit_angle(float *angle, float offset);
+void	door_str(t_game *game);
 
 //						utils						//
 void	errorer(void *ptr, int dimension, char *m);

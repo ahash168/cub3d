@@ -6,7 +6,7 @@
 #    By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 20:07:46 by ahashem           #+#    #+#              #
-#    Updated: 2024/11/02 15:11:40 by ahashem          ###   ########.fr        #
+#    Updated: 2024/11/03 11:48:31 by ahashem          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ SRCCP	=	parsing.c parse_file.c parse_textures.c assign_texture.c assign_colour.c
 			set_colour.c parse_map.c validate_map.c parsing_utils.c create_textures.c
 
 SRCCE	=	hooks.c minimap.c mooooove.c roooootate.c drawing.c loops.c handle_hooks.c \
-			raaaaays.c make_images.c doors.c
+			raaaaays.c make_images.c doors.c setup_ray.c get_inter.c door_str.c rendermap.c \
+			triangle.c draw_rays.c
 
 SRCCU	=	error.c close_game.c init_game.c
 
