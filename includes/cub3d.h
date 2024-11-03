@@ -6,7 +6,7 @@
 /*   By: ahashem <ahashem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 17:22:00 by tabadawi          #+#    #+#             */
-/*   Updated: 2024/11/03 14:34:24 by ahashem          ###   ########.fr       */
+/*   Updated: 2024/11/03 15:23:19 by ahashem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,15 @@ typedef struct s_trgb
 	unsigned char	g;
 	unsigned char	b;
 }	t_trgb;
+
+typedef struct s_put_ray
+{
+	int		tex_x;
+	int		tex_y;
+	float	dist_avg;
+	int		color;
+	int		y;
+}	t_put_ray;
 
 typedef struct s_keys
 {
@@ -288,6 +297,10 @@ void	triangle(t_game *game, t_mini_player p);
 void	make_images(t_game *game);
 void	doors(t_game *game);
 void	door_str(t_game *game);
+
+int		get_pixel_color_from_texture(t_data *texture, int x, int y);
+int		change_shade(int colour, float dist, float avg);
+int		shade_floor(int colour, int y);
 
 //						utils						//
 void	errorer(void *ptr, int dimension, char *m);
